@@ -1,0 +1,102 @@
+
+
+application {
+  config {
+    blueprints [jooq,entity-audit,ngxadmin]
+  }
+  entities *
+}
+
+
+/*
+ *	Demographic data
+*/
+entity DemographicCoding {
+    name String required,
+	code String required,
+    description TextBlob,
+}
+
+entity Demography {
+	recordId String required,
+    demographicCodingId String required,
+	value String required,
+}
+
+/*
+ *	Demographic data
+*/
+entity SampleType {
+    name String required,
+	code String,
+}
+
+entity AnalysisService {
+	name String required,
+}
+
+entity Sample {
+	sampleTypeId String required,
+    analysisServiceId String required,
+	longitude String,
+    latitude String,
+}
+
+entity Analysis {
+	sampleId String required,
+    analysisServiceId String required,
+    result String,
+    dateResulted LocalDate,
+}
+
+entity Antibiotic {
+	name String required,
+    code String,
+}
+
+entity Orgnanism {
+	name String required,
+    code String,
+}
+
+enum AntibioticResult {
+	SENSITIVE, INTERMEDIATE, RESISTANCE 
+}
+
+entity Client {
+	name String required,
+	longitude String,
+    latitude String,
+}
+
+entity Location {
+	name String required,
+    code String,
+	longitude String,
+    latitude String,
+}
+
+entity Sector {
+	name String required,
+    code String,
+}
+
+entity District {
+	name String required,
+    provinceId String required,
+	longitude String,
+    latitude String,
+}
+
+entity Province {
+	name String required,
+    countryId String required,
+	longitude String,
+    latitude String,
+}
+
+entity Country {
+	name String required,
+	longitude String,
+    latitude String,
+}
