@@ -1,0 +1,95 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-sample-heading" data-cy="SampleCreateUpdateHeading" jhiTranslate="oneHealthApp.sample.home.createOrEditLabel">
+        Create or edit a Sample
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="oneHealthApp.sample.sampleTypeId" for="field_sampleTypeId">Sample Type Id</label>
+          <input
+            type="text"
+            class="form-control"
+            name="sampleTypeId"
+            id="field_sampleTypeId"
+            data-cy="sampleTypeId"
+            formControlName="sampleTypeId"
+          />
+          <div
+            *ngIf="editForm.get('sampleTypeId')!.invalid && (editForm.get('sampleTypeId')!.dirty || editForm.get('sampleTypeId')!.touched)"
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('sampleTypeId')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="oneHealthApp.sample.analysisServiceId" for="field_analysisServiceId"
+            >Analysis Service Id</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="analysisServiceId"
+            id="field_analysisServiceId"
+            data-cy="analysisServiceId"
+            formControlName="analysisServiceId"
+          />
+          <div
+            *ngIf="
+              editForm.get('analysisServiceId')!.invalid &&
+              (editForm.get('analysisServiceId')!.dirty || editForm.get('analysisServiceId')!.touched)
+            "
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('analysisServiceId')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="oneHealthApp.sample.longitude" for="field_longitude">Longitude</label>
+          <input type="text" class="form-control" name="longitude" id="field_longitude" data-cy="longitude" formControlName="longitude" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="oneHealthApp.sample.latitude" for="field_latitude">Latitude</label>
+          <input type="text" class="form-control" name="latitude" id="field_latitude" data-cy="latitude" formControlName="latitude" />
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

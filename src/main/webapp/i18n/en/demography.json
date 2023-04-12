@@ -1,0 +1,26 @@
+{
+  "oneHealthApp": {
+    "demography": {
+      "home": {
+        "title": "Demographies",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Demography",
+        "createOrEditLabel": "Create or edit a Demography",
+        "notFound": "No Demographies found"
+      },
+      "created": "A new Demography is created with identifier {{ param }}",
+      "updated": "A Demography is updated with identifier {{ param }}",
+      "deleted": "A Demography is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Demography {{ id }}?"
+      },
+      "detail": {
+        "title": "Demography"
+      },
+      "id": "ID",
+      "recordId": "Record Id",
+      "demographicCodingId": "Demographic Coding Id",
+      "value": "Value"
+    }
+  }
+}

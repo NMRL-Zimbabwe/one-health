@@ -1,0 +1,44 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="analysis">
+      <h2 data-cy="analysisDetailsHeading"><span jhiTranslate="oneHealthApp.analysis.detail.title">Analysis</span></h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ analysis.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="oneHealthApp.analysis.sampleId">Sample Id</span></dt>
+        <dd>
+          <span>{{ analysis.sampleId }}</span>
+        </dd>
+        <dt><span jhiTranslate="oneHealthApp.analysis.analysisServiceId">Analysis Service Id</span></dt>
+        <dd>
+          <span>{{ analysis.analysisServiceId }}</span>
+        </dd>
+        <dt><span jhiTranslate="oneHealthApp.analysis.result">Result</span></dt>
+        <dd>
+          <span>{{ analysis.result }}</span>
+        </dd>
+        <dt><span jhiTranslate="oneHealthApp.analysis.dateResulted">Date Resulted</span></dt>
+        <dd>
+          <span>{{ analysis.dateResulted | formatMediumDate }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/analysis', analysis.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

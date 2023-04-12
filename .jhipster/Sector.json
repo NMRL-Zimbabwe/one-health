@@ -1,0 +1,25 @@
+{
+  "applications": "*",
+  "changelogDate": "20230412143539",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "sector",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "code",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Sector",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}

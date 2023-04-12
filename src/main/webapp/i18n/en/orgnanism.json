@@ -1,0 +1,25 @@
+{
+  "oneHealthApp": {
+    "orgnanism": {
+      "home": {
+        "title": "Orgnanisms",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Orgnanism",
+        "createOrEditLabel": "Create or edit a Orgnanism",
+        "notFound": "No Orgnanisms found"
+      },
+      "created": "A new Orgnanism is created with identifier {{ param }}",
+      "updated": "A Orgnanism is updated with identifier {{ param }}",
+      "deleted": "A Orgnanism is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Orgnanism {{ id }}?"
+      },
+      "detail": {
+        "title": "Orgnanism"
+      },
+      "id": "ID",
+      "name": "Name",
+      "code": "Code"
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "applications": "*",
+  "changelogDate": "20230412143534",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "analysis",
+  "fields": [
+    {
+      "fieldName": "sampleId",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "analysisServiceId",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "result",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "dateResulted",
+      "fieldType": "LocalDate"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Analysis",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}
