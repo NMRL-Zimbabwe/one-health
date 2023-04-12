@@ -1,0 +1,21 @@
+{
+  "applications": "*",
+  "changelogDate": "20230412143532",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "analysis_service",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "AnalysisService",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}

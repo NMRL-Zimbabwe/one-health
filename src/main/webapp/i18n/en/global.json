@@ -7,6 +7,20 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entities",
+        "demographicCoding": "Demographic Coding",
+        "demography": "Demography",
+        "sampleType": "Sample Type",
+        "analysisService": "Analysis Service",
+        "sample": "Sample",
+        "analysis": "Analysis",
+        "antibiotic": "Antibiotic",
+        "orgnanism": "Orgnanism",
+        "client": "Client",
+        "location": "Location",
+        "sector": "Sector",
+        "district": "District",
+        "province": "Province",
+        "country": "Country",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

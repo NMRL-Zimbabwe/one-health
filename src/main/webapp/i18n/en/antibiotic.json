@@ -1,0 +1,25 @@
+{
+  "oneHealthApp": {
+    "antibiotic": {
+      "home": {
+        "title": "Antibiotics",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Antibiotic",
+        "createOrEditLabel": "Create or edit a Antibiotic",
+        "notFound": "No Antibiotics found"
+      },
+      "created": "A new Antibiotic is created with identifier {{ param }}",
+      "updated": "A Antibiotic is updated with identifier {{ param }}",
+      "deleted": "A Antibiotic is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Antibiotic {{ id }}?"
+      },
+      "detail": {
+        "title": "Antibiotic"
+      },
+      "id": "ID",
+      "name": "Name",
+      "code": "Code"
+    }
+  }
+}

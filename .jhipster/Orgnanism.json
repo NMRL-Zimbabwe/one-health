@@ -1,0 +1,25 @@
+{
+  "applications": "*",
+  "changelogDate": "20230412143536",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "orgnanism",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "code",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Orgnanism",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}

@@ -1,0 +1,25 @@
+{
+  "applications": "*",
+  "changelogDate": "20230412143535",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "antibiotic",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "code",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "Antibiotic",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}

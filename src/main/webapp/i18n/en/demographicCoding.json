@@ -1,0 +1,26 @@
+{
+  "oneHealthApp": {
+    "demographicCoding": {
+      "home": {
+        "title": "Demographic Codings",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Demographic Coding",
+        "createOrEditLabel": "Create or edit a Demographic Coding",
+        "notFound": "No Demographic Codings found"
+      },
+      "created": "A new Demographic Coding is created with identifier {{ param }}",
+      "updated": "A Demographic Coding is updated with identifier {{ param }}",
+      "deleted": "A Demographic Coding is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Demographic Coding {{ id }}?"
+      },
+      "detail": {
+        "title": "Demographic Coding"
+      },
+      "id": "ID",
+      "name": "Name",
+      "code": "Code",
+      "description": "Description"
+    }
+  }
+}

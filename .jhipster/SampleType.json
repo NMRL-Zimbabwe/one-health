@@ -1,0 +1,25 @@
+{
+  "applications": "*",
+  "changelogDate": "20230412143531",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "sample_type",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "code",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "SampleType",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}
