@@ -1,11 +1,12 @@
 
-
-application {
-  config {
-    blueprints [jooq,entity-audit,ngxadmin]
-  }
-  entities *
-}
+/*
+ * application {
+ *  config {
+ *   blueprints [jooq,entity-audit,ngxadmin]
+ *  }
+ *  entities *
+ * }
+/*
 
 
 /*
