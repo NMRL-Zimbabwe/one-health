@@ -18,8 +18,10 @@ export class LandingComponent implements OnInit {
 
   randomChart(): void {
     const chartDom = document.getElementById('random-chart')!;
-    const myChart = echarts.init(chartDom);
+    let myChart = echarts.init(chartDom);
     setInterval(() => {
+      myChart.dispose();
+      myChart = echarts.init(chartDom);
       const options = this.getRandomChartOptions();
       myChart.setOption(options);
     }, 2000);
@@ -43,6 +45,29 @@ export class LandingComponent implements OnInit {
             { value: Math.random(), name: 'Aminal' },
             { value: Math.random(), name: 'Food' },
           ],
+        },
+      ],
+    };
+
+    const pieC = {
+      series: [
+        {
+          name: 'Access From',
+          type: 'pie',
+          radius: '50%',
+          data: [
+            { value: Math.random(), name: 'EMA' },
+            { value: Math.random(), name: 'Human' },
+            { value: Math.random(), name: 'Aminal' },
+            { value: Math.random(), name: 'Food' },
+          ],
+          emphasis: {
+            itemStyle: {
+              shadowBlur: 10,
+              shadowOffsetX: 0,
+              shadowColor: 'rgba(0, 0, 0, 0.5)',
+            },
+          },
         },
       ],
     };
@@ -88,7 +113,39 @@ export class LandingComponent implements OnInit {
         ],
       },
     };
-    const options = [donut, loading];
+    const areaC = {
+      xAxis: {
+        type: 'category',
+        boundaryGap: false,
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      },
+      yAxis: {
+        type: 'value',
+      },
+      series: [
+        {
+          data: [820, 932, 901, 934, 1290, 1330, 1320],
+          type: 'line',
+          areaStyle: {},
+        },
+      ],
+    };
+    const lineC = {
+      xAxis: {
+        type: 'category',
+        data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      },
+      yAxis: {
+        type: 'value',
+      },
+      series: [
+        {
+          data: [150, 230, 224, 218, 135, 147, 260],
+          type: 'line',
+        },
+      ],
+    };
+    const options = [donut, loading, pieC, areaC, lineC];
     return options[Math.floor(Math.random() * options.length)];
   }
 
