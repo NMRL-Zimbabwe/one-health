@@ -8,11 +8,13 @@ import { of } from 'rxjs';
 import { AnalysisServiceService } from '../service/analysis-service.service';
 
 import { AnalysisServiceComponent } from './analysis-service.component';
+import SpyInstance = jest.SpyInstance;
 
 describe('AnalysisService Management Component', () => {
   let comp: AnalysisServiceComponent;
   let fixture: ComponentFixture<AnalysisServiceComponent>;
   let service: AnalysisServiceService;
+  let routerNavigateSpy: SpyInstance<Promise<boolean>>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -46,6 +48,7 @@ describe('AnalysisService Management Component', () => {
     fixture = TestBed.createComponent(AnalysisServiceComponent);
     comp = fixture.componentInstance;
     service = TestBed.inject(AnalysisServiceService);
+    routerNavigateSpy = jest.spyOn(comp.router, 'navigate');
 
     const headers = new HttpHeaders();
     jest.spyOn(service, 'query').mockReturnValue(
@@ -75,5 +78,39 @@ describe('AnalysisService Management Component', () => {
       expect(service.getAnalysisServiceIdentifier).toHaveBeenCalledWith(entity);
       expect(id).toBe(entity.id);
     });
+  });
+
+  it('should load a page', () => {
+    // WHEN
+    comp.navigateToPage(1);
+
+    // THEN
+    expect(routerNavigateSpy).toHaveBeenCalled();
+  });
+
+  it('should calculate the sort attribute for an id', () => {
+    // WHEN
+    comp.ngOnInit();
+
+    // THEN
+    expect(service.query).toHaveBeenLastCalledWith(expect.objectContaining({ sort: ['id,desc'] }));
+  });
+
+  it('should calculate the sort attribute for a non-id attribute', () => {
+    // GIVEN
+    comp.predicate = 'name';
+
+    // WHEN
+    comp.navigateToWithComponentValues();
+
+    // THEN
+    expect(routerNavigateSpy).toHaveBeenLastCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        queryParams: expect.objectContaining({
+          sort: ['name,asc'],
+        }),
+      })
+    );
   });
 });

@@ -27,8 +27,8 @@
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
   "name": "Analysis",
-  "pagination": "no",
+  "pagination": "pagination",
   "readOnly": false,
   "relationships": [],
-  "service": "no"
+  "service": "serviceImpl"
 }
