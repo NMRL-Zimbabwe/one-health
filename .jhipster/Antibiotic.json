@@ -26,8 +26,8 @@
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
   "name": "Antibiotic",
-  "pagination": "no",
+  "pagination": "pagination",
   "readOnly": false,
   "relationships": [],
-  "service": "no"
+  "service": "serviceImpl"
 }

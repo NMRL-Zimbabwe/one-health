@@ -17,8 +17,8 @@
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
   "name": "ClientPhone",
-  "pagination": "no",
+  "pagination": "pagination",
   "readOnly": false,
   "relationships": [],
-  "service": "no"
+  "service": "serviceImpl"
 }

@@ -10,13 +10,19 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 import zw.nmrl.onehealth.domain.District;
 import zw.nmrl.onehealth.repository.DistrictRepository;
+import zw.nmrl.onehealth.service.DistrictService;
 import zw.nmrl.onehealth.web.rest.errors.BadRequestAlertException;
 
 /**
@@ -24,7 +30,6 @@ import zw.nmrl.onehealth.web.rest.errors.BadRequestAlertException;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class DistrictResource {
 
     private final Logger log = LoggerFactory.getLogger(DistrictResource.class);
@@ -34,9 +39,12 @@ public class DistrictResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final DistrictService districtService;
+
     private final DistrictRepository districtRepository;
 
-    public DistrictResource(DistrictRepository districtRepository) {
+    public DistrictResource(DistrictService districtService, DistrictRepository districtRepository) {
+        this.districtService = districtService;
         this.districtRepository = districtRepository;
     }
 
@@ -53,7 +61,7 @@ public class DistrictResource {
         if (district.getId() != null) {
             throw new BadRequestAlertException("A new district cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        District result = districtRepository.save(district);
+        District result = districtService.save(district);
         return ResponseEntity
             .created(new URI("/api/districts/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -87,7 +95,7 @@ public class DistrictResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        District result = districtRepository.save(district);
+        District result = districtService.update(district);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, district.getId().toString()))
@@ -122,25 +130,7 @@ public class DistrictResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<District> result = districtRepository
-            .findById(district.getId())
-            .map(existingDistrict -> {
-                if (district.getName() != null) {
-                    existingDistrict.setName(district.getName());
-                }
-                if (district.getProvinceId() != null) {
-                    existingDistrict.setProvinceId(district.getProvinceId());
-                }
-                if (district.getLongitude() != null) {
-                    existingDistrict.setLongitude(district.getLongitude());
-                }
-                if (district.getLatitude() != null) {
-                    existingDistrict.setLatitude(district.getLatitude());
-                }
-
-                return existingDistrict;
-            })
-            .map(districtRepository::save);
+        Optional<District> result = districtService.partialUpdate(district);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -151,12 +141,15 @@ public class DistrictResource {
     /**
      * {@code GET  /districts} : get all the districts.
      *
+     * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of districts in body.
      */
     @GetMapping("/districts")
-    public List<District> getAllDistricts() {
-        log.debug("REST request to get all Districts");
-        return districtRepository.findAll();
+    public ResponseEntity<List<District>> getAllDistricts(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of Districts");
+        Page<District> page = districtService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -168,7 +161,7 @@ public class DistrictResource {
     @GetMapping("/districts/{id}")
     public ResponseEntity<District> getDistrict(@PathVariable Long id) {
         log.debug("REST request to get District : {}", id);
-        Optional<District> district = districtRepository.findById(id);
+        Optional<District> district = districtService.findOne(id);
         return ResponseUtil.wrapOrNotFound(district);
     }
 
@@ -181,7 +174,7 @@ public class DistrictResource {
     @DeleteMapping("/districts/{id}")
     public ResponseEntity<Void> deleteDistrict(@PathVariable Long id) {
         log.debug("REST request to delete District : {}", id);
-        districtRepository.deleteById(id);
+        districtService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

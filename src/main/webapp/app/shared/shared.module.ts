@@ -13,9 +13,10 @@ import { SortByDirective } from './sort/sort-by.directive';
 import { SortDirective } from './sort/sort.directive';
 import { ItemCountComponent } from './pagination/item-count.component';
 import { FilterComponent } from './filter/filter.component';
+import { AmrChartsModule } from 'app/entities/components/amr-charts.module';
 
 @NgModule({
-  imports: [SharedLibsModule],
+  imports: [SharedLibsModule, AmrChartsModule],
   declarations: [
     FindLanguageFromKeyPipe,
     TranslateDirective,
@@ -32,6 +33,7 @@ import { FilterComponent } from './filter/filter.component';
   ],
   exports: [
     SharedLibsModule,
+    AmrChartsModule,
     FindLanguageFromKeyPipe,
     TranslateDirective,
     AlertComponent,
