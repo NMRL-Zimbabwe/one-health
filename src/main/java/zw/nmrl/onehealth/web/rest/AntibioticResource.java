@@ -10,13 +10,19 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 import zw.nmrl.onehealth.domain.Antibiotic;
 import zw.nmrl.onehealth.repository.AntibioticRepository;
+import zw.nmrl.onehealth.service.AntibioticService;
 import zw.nmrl.onehealth.web.rest.errors.BadRequestAlertException;
 
 /**
@@ -24,7 +30,6 @@ import zw.nmrl.onehealth.web.rest.errors.BadRequestAlertException;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class AntibioticResource {
 
     private final Logger log = LoggerFactory.getLogger(AntibioticResource.class);
@@ -34,9 +39,12 @@ public class AntibioticResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final AntibioticService antibioticService;
+
     private final AntibioticRepository antibioticRepository;
 
-    public AntibioticResource(AntibioticRepository antibioticRepository) {
+    public AntibioticResource(AntibioticService antibioticService, AntibioticRepository antibioticRepository) {
+        this.antibioticService = antibioticService;
         this.antibioticRepository = antibioticRepository;
     }
 
@@ -53,7 +61,7 @@ public class AntibioticResource {
         if (antibiotic.getId() != null) {
             throw new BadRequestAlertException("A new antibiotic cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Antibiotic result = antibioticRepository.save(antibiotic);
+        Antibiotic result = antibioticService.save(antibiotic);
         return ResponseEntity
             .created(new URI("/api/antibiotics/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -87,7 +95,7 @@ public class AntibioticResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Antibiotic result = antibioticRepository.save(antibiotic);
+        Antibiotic result = antibioticService.update(antibiotic);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, antibiotic.getId().toString()))
@@ -122,25 +130,7 @@ public class AntibioticResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Antibiotic> result = antibioticRepository
-            .findById(antibiotic.getId())
-            .map(existingAntibiotic -> {
-                if (antibiotic.getName() != null) {
-                    existingAntibiotic.setName(antibiotic.getName());
-                }
-                if (antibiotic.getCode() != null) {
-                    existingAntibiotic.setCode(antibiotic.getCode());
-                }
-                if (antibiotic.getStatus() != null) {
-                    existingAntibiotic.setStatus(antibiotic.getStatus());
-                }
-                if (antibiotic.getDescription() != null) {
-                    existingAntibiotic.setDescription(antibiotic.getDescription());
-                }
-
-                return existingAntibiotic;
-            })
-            .map(antibioticRepository::save);
+        Optional<Antibiotic> result = antibioticService.partialUpdate(antibiotic);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -151,12 +141,15 @@ public class AntibioticResource {
     /**
      * {@code GET  /antibiotics} : get all the antibiotics.
      *
+     * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of antibiotics in body.
      */
     @GetMapping("/antibiotics")
-    public List<Antibiotic> getAllAntibiotics() {
-        log.debug("REST request to get all Antibiotics");
-        return antibioticRepository.findAll();
+    public ResponseEntity<List<Antibiotic>> getAllAntibiotics(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of Antibiotics");
+        Page<Antibiotic> page = antibioticService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -168,7 +161,7 @@ public class AntibioticResource {
     @GetMapping("/antibiotics/{id}")
     public ResponseEntity<Antibiotic> getAntibiotic(@PathVariable Long id) {
         log.debug("REST request to get Antibiotic : {}", id);
-        Optional<Antibiotic> antibiotic = antibioticRepository.findById(id);
+        Optional<Antibiotic> antibiotic = antibioticService.findOne(id);
         return ResponseUtil.wrapOrNotFound(antibiotic);
     }
 
@@ -181,7 +174,7 @@ public class AntibioticResource {
     @DeleteMapping("/antibiotics/{id}")
     public ResponseEntity<Void> deleteAntibiotic(@PathVariable Long id) {
         log.debug("REST request to delete Antibiotic : {}", id);
-        antibioticRepository.deleteById(id);
+        antibioticService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))
