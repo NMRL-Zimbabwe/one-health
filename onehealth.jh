@@ -1,21 +1,10 @@
-
-/*
- * application {
- *  config {
- *   blueprints [jooq,entity-audit,ngxadmin]
- *  }
- *  entities *
- * }
-/*
-
-
 /*
  *	Demographic data
 */
 entity DemographicCoding {
     name String required,
 	code String required,
-    description TextBlob,
+    description String,
 }
 
 entity Demography {
@@ -24,9 +13,10 @@ entity Demography {
 	value String required,
 }
 
-/*
- *	Demographic data
-*/
+enum Gender {
+	MALE, FEMALE, UNKNOWN
+}
+
 entity SampleType {
     name String required,
 	code String,
@@ -34,13 +24,24 @@ entity SampleType {
 
 entity AnalysisService {
 	name String required,
+	code String,    
 }
 
-entity Sample {
+entity LaboratoryRequest {
+	sampleId String required,
 	sampleTypeId String required,
-    analysisServiceId String required,
-	longitude String,
-    latitude String,
+    dateCollected LocalDate,
+    dateReceived LocalDate,
+    sampleCondition String,
+    clientId String,
+    priority Integer,
+    status String,
+    remarks String,
+    clientId String,
+    locationId String,
+    sectorId String,
+    districtId String,
+    procinceId String,
 }
 
 entity Analysis {
@@ -53,9 +54,11 @@ entity Analysis {
 entity Antibiotic {
 	name String required,
     code String,
+    status String,
+    description String,
 }
 
-entity Orgnanism {
+entity Organism {
 	name String required,
     code String,
 }
@@ -64,19 +67,33 @@ enum AntibioticResult {
 	SENSITIVE, INTERMEDIATE, RESISTANCE 
 }
 
+/* Customer */
 entity Client {
 	name String required,
-	longitude String,
-    latitude String,
+    address String,
+    phone String,
 }
 
+entity ClientAddress {
+	name String,
+    clientId String
+}
+
+entity ClientPhone {
+	number String,
+    clientId String,
+}
+
+/* e.g river */
 entity Location {
 	name String required,
     code String,
+    locationType String,
 	longitude String,
     latitude String,
 }
 
+/* EMA,HEALTH,... */
 entity Sector {
 	name String required,
     code String,
