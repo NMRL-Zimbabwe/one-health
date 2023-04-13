@@ -18,7 +18,8 @@
         "title": "Analysis Service"
       },
       "id": "ID",
-      "name": "Name"
+      "name": "Name",
+      "code": "Code"
     }
   }
 }

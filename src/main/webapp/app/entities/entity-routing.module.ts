@@ -74,6 +74,26 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'oneHealthApp.country.home.title' },
         loadChildren: () => import('./country/country.module').then(m => m.CountryModule),
       },
+      {
+        path: 'laboratory-request',
+        data: { pageTitle: 'oneHealthApp.laboratoryRequest.home.title' },
+        loadChildren: () => import('./laboratory-request/laboratory-request.module').then(m => m.LaboratoryRequestModule),
+      },
+      {
+        path: 'organism',
+        data: { pageTitle: 'oneHealthApp.organism.home.title' },
+        loadChildren: () => import('./organism/organism.module').then(m => m.OrganismModule),
+      },
+      {
+        path: 'client-address',
+        data: { pageTitle: 'oneHealthApp.clientAddress.home.title' },
+        loadChildren: () => import('./client-address/client-address.module').then(m => m.ClientAddressModule),
+      },
+      {
+        path: 'client-phone',
+        data: { pageTitle: 'oneHealthApp.clientPhone.home.title' },
+        loadChildren: () => import('./client-phone/client-phone.module').then(m => m.ClientPhoneModule),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],

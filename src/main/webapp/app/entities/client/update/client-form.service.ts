@@ -19,8 +19,8 @@ type ClientFormDefaults = Pick<NewClient, 'id'>;
 type ClientFormGroupContent = {
   id: FormControl<IClient['id'] | NewClient['id']>;
   name: FormControl<IClient['name']>;
-  longitude: FormControl<IClient['longitude']>;
-  latitude: FormControl<IClient['latitude']>;
+  address: FormControl<IClient['address']>;
+  phone: FormControl<IClient['phone']>;
 };
 
 export type ClientFormGroup = FormGroup<ClientFormGroupContent>;
@@ -43,8 +43,8 @@ export class ClientFormService {
       name: new FormControl(clientRawValue.name, {
         validators: [Validators.required],
       }),
-      longitude: new FormControl(clientRawValue.longitude),
-      latitude: new FormControl(clientRawValue.latitude),
+      address: new FormControl(clientRawValue.address),
+      phone: new FormControl(clientRawValue.phone),
     });
   }
 

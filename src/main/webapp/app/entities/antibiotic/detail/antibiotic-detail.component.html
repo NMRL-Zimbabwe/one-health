@@ -22,6 +22,14 @@
         <dd>
           <span>{{ antibiotic.code }}</span>
         </dd>
+        <dt><span jhiTranslate="oneHealthApp.antibiotic.status">Status</span></dt>
+        <dd>
+          <span>{{ antibiotic.status }}</span>
+        </dd>
+        <dt><span jhiTranslate="oneHealthApp.antibiotic.description">Description</span></dt>
+        <dd>
+          <span>{{ antibiotic.description }}</span>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

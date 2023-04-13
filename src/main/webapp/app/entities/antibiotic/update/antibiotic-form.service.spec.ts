@@ -22,6 +22,8 @@ describe('Antibiotic Form Service', () => {
             id: expect.any(Object),
             name: expect.any(Object),
             code: expect.any(Object),
+            status: expect.any(Object),
+            description: expect.any(Object),
           })
         );
       });
@@ -34,6 +36,8 @@ describe('Antibiotic Form Service', () => {
             id: expect.any(Object),
             name: expect.any(Object),
             code: expect.any(Object),
+            status: expect.any(Object),
+            description: expect.any(Object),
           })
         );
       });

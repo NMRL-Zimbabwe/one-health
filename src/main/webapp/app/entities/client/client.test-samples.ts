@@ -8,19 +8,19 @@ export const sampleWithRequiredData: IClient = {
 export const sampleWithPartialData: IClient = {
   id: 7178,
   name: 'Virginia Concrete',
-  longitude: 'asynchronous Account Future',
-  latitude: 'Multi-tiered',
+  address: 'asynchronous Account Future',
+  phone: '1-342-345-9877',
 };
 
 export const sampleWithFullData: IClient = {
-  id: 17055,
-  name: 'Washington synthesize',
-  longitude: 'Reverse-engineered',
-  latitude: 'Steel',
+  id: 30589,
+  name: 'Reverse-engineered',
+  address: 'Steel',
+  phone: '519.874.3604 x1077',
 };
 
 export const sampleWithNewData: NewClient = {
-  name: 'reinvent PNG seamless',
+  name: 'District',
   id: null,
 };
 

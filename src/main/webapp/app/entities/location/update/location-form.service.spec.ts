@@ -22,6 +22,7 @@ describe('Location Form Service', () => {
             id: expect.any(Object),
             name: expect.any(Object),
             code: expect.any(Object),
+            locationType: expect.any(Object),
             longitude: expect.any(Object),
             latitude: expect.any(Object),
           })
@@ -36,6 +37,7 @@ describe('Location Form Service', () => {
             id: expect.any(Object),
             name: expect.any(Object),
             code: expect.any(Object),
+            locationType: expect.any(Object),
             longitude: expect.any(Object),
             latitude: expect.any(Object),
           })

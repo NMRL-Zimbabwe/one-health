@@ -128,11 +128,11 @@ public class ClientResource {
                 if (client.getName() != null) {
                     existingClient.setName(client.getName());
                 }
-                if (client.getLongitude() != null) {
-                    existingClient.setLongitude(client.getLongitude());
+                if (client.getAddress() != null) {
+                    existingClient.setAddress(client.getAddress());
                 }
-                if (client.getLatitude() != null) {
-                    existingClient.setLatitude(client.getLatitude());
+                if (client.getPhone() != null) {
+                    existingClient.setPhone(client.getPhone());
                 }
 
                 return existingClient;

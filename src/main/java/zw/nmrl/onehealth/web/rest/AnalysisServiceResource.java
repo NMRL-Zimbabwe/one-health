@@ -129,6 +129,9 @@ public class AnalysisServiceResource {
                 if (analysisService.getName() != null) {
                     existingAnalysisService.setName(analysisService.getName());
                 }
+                if (analysisService.getCode() != null) {
+                    existingAnalysisService.setCode(analysisService.getCode());
+                }
 
                 return existingAnalysisService;
             })

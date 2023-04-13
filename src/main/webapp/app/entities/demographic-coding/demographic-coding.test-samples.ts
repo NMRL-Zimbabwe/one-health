@@ -16,12 +16,12 @@ export const sampleWithFullData: IDemographicCoding = {
   id: 4286,
   name: 'tangible grid-enabled',
   code: 'parsing navigate integrate',
-  description: '../fake-data/blob/hipster.txt',
+  description: 'vertical Cotton',
 };
 
 export const sampleWithNewData: NewDemographicCoding = {
-  name: 'vertical Cotton',
-  code: 'copying haptic',
+  name: 'copying haptic',
+  code: 'Convertible',
   id: null,
 };
 

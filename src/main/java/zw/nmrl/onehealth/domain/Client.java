@@ -24,11 +24,11 @@ public class Client implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "longitude")
-    private String longitude;
+    @Column(name = "address")
+    private String address;
 
-    @Column(name = "latitude")
-    private String latitude;
+    @Column(name = "phone")
+    private String phone;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -58,30 +58,30 @@ public class Client implements Serializable {
         this.name = name;
     }
 
-    public String getLongitude() {
-        return this.longitude;
+    public String getAddress() {
+        return this.address;
     }
 
-    public Client longitude(String longitude) {
-        this.setLongitude(longitude);
+    public Client address(String address) {
+        this.setAddress(address);
         return this;
     }
 
-    public void setLongitude(String longitude) {
-        this.longitude = longitude;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getLatitude() {
-        return this.latitude;
+    public String getPhone() {
+        return this.phone;
     }
 
-    public Client latitude(String latitude) {
-        this.setLatitude(latitude);
+    public Client phone(String phone) {
+        this.setPhone(phone);
         return this;
     }
 
-    public void setLatitude(String latitude) {
-        this.latitude = latitude;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -109,8 +109,8 @@ public class Client implements Serializable {
         return "Client{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", longitude='" + getLongitude() + "'" +
-            ", latitude='" + getLatitude() + "'" +
+            ", address='" + getAddress() + "'" +
+            ", phone='" + getPhone() + "'" +
             "}";
     }
 }

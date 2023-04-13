@@ -24,6 +24,9 @@ public class AnalysisService implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "code")
+    private String code;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -52,6 +55,19 @@ public class AnalysisService implements Serializable {
         this.name = name;
     }
 
+    public String getCode() {
+        return this.code;
+    }
+
+    public AnalysisService code(String code) {
+        this.setCode(code);
+        return this;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -77,6 +93,7 @@ public class AnalysisService implements Serializable {
         return "AnalysisService{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", code='" + getCode() + "'" +
             "}";
     }
 }

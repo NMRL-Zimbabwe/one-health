@@ -20,6 +20,8 @@ type AntibioticFormGroupContent = {
   id: FormControl<IAntibiotic['id'] | NewAntibiotic['id']>;
   name: FormControl<IAntibiotic['name']>;
   code: FormControl<IAntibiotic['code']>;
+  status: FormControl<IAntibiotic['status']>;
+  description: FormControl<IAntibiotic['description']>;
 };
 
 export type AntibioticFormGroup = FormGroup<AntibioticFormGroupContent>;
@@ -43,6 +45,8 @@ export class AntibioticFormService {
         validators: [Validators.required],
       }),
       code: new FormControl(antibioticRawValue.code),
+      status: new FormControl(antibioticRawValue.status),
+      description: new FormControl(antibioticRawValue.description),
     });
   }
 

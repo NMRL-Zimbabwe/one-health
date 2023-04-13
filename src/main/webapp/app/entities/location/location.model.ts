@@ -2,6 +2,7 @@ export interface ILocation {
   id: number;
   name?: string | null;
   code?: string | null;
+  locationType?: string | null;
   longitude?: string | null;
   latitude?: string | null;
 }

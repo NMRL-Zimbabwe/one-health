@@ -1,0 +1,25 @@
+{
+  "oneHealthApp": {
+    "clientPhone": {
+      "home": {
+        "title": "Client Phones",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Client Phone",
+        "createOrEditLabel": "Create or edit a Client Phone",
+        "notFound": "No Client Phones found"
+      },
+      "created": "A new Client Phone is created with identifier {{ param }}",
+      "updated": "A Client Phone is updated with identifier {{ param }}",
+      "deleted": "A Client Phone is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Client Phone {{ id }}?"
+      },
+      "detail": {
+        "title": "Client Phone"
+      },
+      "id": "ID",
+      "number": "Number",
+      "clientId": "Client Id"
+    }
+  }
+}

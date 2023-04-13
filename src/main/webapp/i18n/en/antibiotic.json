@@ -19,7 +19,9 @@
       },
       "id": "ID",
       "name": "Name",
-      "code": "Code"
+      "code": "Code",
+      "status": "Status",
+      "description": "Description"
     }
   }
 }

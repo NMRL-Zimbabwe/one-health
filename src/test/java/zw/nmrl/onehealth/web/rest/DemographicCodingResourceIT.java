@@ -17,7 +17,6 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.Base64Utils;
 import zw.nmrl.onehealth.IntegrationTest;
 import zw.nmrl.onehealth.domain.DemographicCoding;
 import zw.nmrl.onehealth.repository.DemographicCodingRepository;
@@ -181,7 +180,7 @@ class DemographicCodingResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(demographicCoding.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
     }
 
     @Test
@@ -198,7 +197,7 @@ class DemographicCodingResourceIT {
             .andExpect(jsonPath("$.id").value(demographicCoding.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE))
-            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()));
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION));
     }
 
     @Test

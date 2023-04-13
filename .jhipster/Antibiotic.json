@@ -13,6 +13,14 @@
     {
       "fieldName": "code",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
     }
   ],
   "fluentMethods": true,

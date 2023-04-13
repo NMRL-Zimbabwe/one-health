@@ -1,0 +1,194 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2
+        id="jhi-laboratory-request-heading"
+        data-cy="LaboratoryRequestCreateUpdateHeading"
+        jhiTranslate="oneHealthApp.laboratoryRequest.home.createOrEditLabel"
+      >
+        Create or edit a Laboratory Request
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="row mb-3" *ngIf="editForm.controls.id.value !== null">
+          <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+          <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="oneHealthApp.laboratoryRequest.sampleId" for="field_sampleId">Sample Id</label>
+          <input type="text" class="form-control" name="sampleId" id="field_sampleId" data-cy="sampleId" formControlName="sampleId" />
+          <div *ngIf="editForm.get('sampleId')!.invalid && (editForm.get('sampleId')!.dirty || editForm.get('sampleId')!.touched)">
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('sampleId')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="oneHealthApp.laboratoryRequest.sampleTypeId" for="field_sampleTypeId"
+            >Sample Type Id</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="sampleTypeId"
+            id="field_sampleTypeId"
+            data-cy="sampleTypeId"
+            formControlName="sampleTypeId"
+          />
+          <div
+            *ngIf="editForm.get('sampleTypeId')!.invalid && (editForm.get('sampleTypeId')!.dirty || editForm.get('sampleTypeId')!.touched)"
+          >
+            <small
+              class="form-text text-danger"
+              *ngIf="editForm.get('sampleTypeId')?.errors?.required"
+              jhiTranslate="entity.validation.required"
+            >
+              This field is required.
+            </small>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="oneHealthApp.laboratoryRequest.dateCollected" for="field_dateCollected"
+            >Date Collected</label
+          >
+          <div class="input-group">
+            <input
+              id="field_dateCollected"
+              data-cy="dateCollected"
+              type="text"
+              class="form-control"
+              name="dateCollected"
+              ngbDatepicker
+              #dateCollectedDp="ngbDatepicker"
+              formControlName="dateCollected"
+            />
+            <button type="button" class="btn btn-secondary" (click)="dateCollectedDp.toggle()">
+              <fa-icon icon="calendar-alt"></fa-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="oneHealthApp.laboratoryRequest.dateReceived" for="field_dateReceived"
+            >Date Received</label
+          >
+          <div class="input-group">
+            <input
+              id="field_dateReceived"
+              data-cy="dateReceived"
+              type="text"
+              class="form-control"
+              name="dateReceived"
+              ngbDatepicker
+              #dateReceivedDp="ngbDatepicker"
+              formControlName="dateReceived"
+            />
+            <button type="button" class="btn btn-secondary" (click)="dateReceivedDp.toggle()">
+              <fa-icon icon="calendar-alt"></fa-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="oneHealthApp.laboratoryRequest.sampleCondition" for="field_sampleCondition"
+            >Sample Condition</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="sampleCondition"
+            id="field_sampleCondition"
+            data-cy="sampleCondition"
+            formControlName="sampleCondition"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="oneHealthApp.laboratoryRequest.clientId" for="field_clientId">Client Id</label>
+          <input type="text" class="form-control" name="clientId" id="field_clientId" data-cy="clientId" formControlName="clientId" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="oneHealthApp.laboratoryRequest.priority" for="field_priority">Priority</label>
+          <input type="number" class="form-control" name="priority" id="field_priority" data-cy="priority" formControlName="priority" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="oneHealthApp.laboratoryRequest.status" for="field_status">Status</label>
+          <input type="text" class="form-control" name="status" id="field_status" data-cy="status" formControlName="status" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="oneHealthApp.laboratoryRequest.remarks" for="field_remarks">Remarks</label>
+          <input type="text" class="form-control" name="remarks" id="field_remarks" data-cy="remarks" formControlName="remarks" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="oneHealthApp.laboratoryRequest.locationId" for="field_locationId">Location Id</label>
+          <input
+            type="text"
+            class="form-control"
+            name="locationId"
+            id="field_locationId"
+            data-cy="locationId"
+            formControlName="locationId"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="oneHealthApp.laboratoryRequest.sectorId" for="field_sectorId">Sector Id</label>
+          <input type="text" class="form-control" name="sectorId" id="field_sectorId" data-cy="sectorId" formControlName="sectorId" />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="oneHealthApp.laboratoryRequest.districtId" for="field_districtId">District Id</label>
+          <input
+            type="text"
+            class="form-control"
+            name="districtId"
+            id="field_districtId"
+            data-cy="districtId"
+            formControlName="districtId"
+          />
+        </div>
+
+        <div class="row mb-3">
+          <label class="form-label" jhiTranslate="oneHealthApp.laboratoryRequest.procinceId" for="field_procinceId">Procince Id</label>
+          <input
+            type="text"
+            class="form-control"
+            name="procinceId"
+            id="field_procinceId"
+            data-cy="procinceId"
+            formControlName="procinceId"
+          />
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

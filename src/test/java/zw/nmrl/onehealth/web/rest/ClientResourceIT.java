@@ -32,11 +32,11 @@ class ClientResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final String DEFAULT_LONGITUDE = "AAAAAAAAAA";
-    private static final String UPDATED_LONGITUDE = "BBBBBBBBBB";
+    private static final String DEFAULT_ADDRESS = "AAAAAAAAAA";
+    private static final String UPDATED_ADDRESS = "BBBBBBBBBB";
 
-    private static final String DEFAULT_LATITUDE = "AAAAAAAAAA";
-    private static final String UPDATED_LATITUDE = "BBBBBBBBBB";
+    private static final String DEFAULT_PHONE = "AAAAAAAAAA";
+    private static final String UPDATED_PHONE = "BBBBBBBBBB";
 
     private static final String ENTITY_API_URL = "/api/clients";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
@@ -62,7 +62,7 @@ class ClientResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Client createEntity(EntityManager em) {
-        Client client = new Client().name(DEFAULT_NAME).longitude(DEFAULT_LONGITUDE).latitude(DEFAULT_LATITUDE);
+        Client client = new Client().name(DEFAULT_NAME).address(DEFAULT_ADDRESS).phone(DEFAULT_PHONE);
         return client;
     }
 
@@ -73,7 +73,7 @@ class ClientResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Client createUpdatedEntity(EntityManager em) {
-        Client client = new Client().name(UPDATED_NAME).longitude(UPDATED_LONGITUDE).latitude(UPDATED_LATITUDE);
+        Client client = new Client().name(UPDATED_NAME).address(UPDATED_ADDRESS).phone(UPDATED_PHONE);
         return client;
     }
 
@@ -96,8 +96,8 @@ class ClientResourceIT {
         assertThat(clientList).hasSize(databaseSizeBeforeCreate + 1);
         Client testClient = clientList.get(clientList.size() - 1);
         assertThat(testClient.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testClient.getLongitude()).isEqualTo(DEFAULT_LONGITUDE);
-        assertThat(testClient.getLatitude()).isEqualTo(DEFAULT_LATITUDE);
+        assertThat(testClient.getAddress()).isEqualTo(DEFAULT_ADDRESS);
+        assertThat(testClient.getPhone()).isEqualTo(DEFAULT_PHONE);
     }
 
     @Test
@@ -148,8 +148,8 @@ class ClientResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(client.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
-            .andExpect(jsonPath("$.[*].longitude").value(hasItem(DEFAULT_LONGITUDE)))
-            .andExpect(jsonPath("$.[*].latitude").value(hasItem(DEFAULT_LATITUDE)));
+            .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS)))
+            .andExpect(jsonPath("$.[*].phone").value(hasItem(DEFAULT_PHONE)));
     }
 
     @Test
@@ -165,8 +165,8 @@ class ClientResourceIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(client.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
-            .andExpect(jsonPath("$.longitude").value(DEFAULT_LONGITUDE))
-            .andExpect(jsonPath("$.latitude").value(DEFAULT_LATITUDE));
+            .andExpect(jsonPath("$.address").value(DEFAULT_ADDRESS))
+            .andExpect(jsonPath("$.phone").value(DEFAULT_PHONE));
     }
 
     @Test
@@ -188,7 +188,7 @@ class ClientResourceIT {
         Client updatedClient = clientRepository.findById(client.getId()).get();
         // Disconnect from session so that the updates on updatedClient are not directly saved in db
         em.detach(updatedClient);
-        updatedClient.name(UPDATED_NAME).longitude(UPDATED_LONGITUDE).latitude(UPDATED_LATITUDE);
+        updatedClient.name(UPDATED_NAME).address(UPDATED_ADDRESS).phone(UPDATED_PHONE);
 
         restClientMockMvc
             .perform(
@@ -203,8 +203,8 @@ class ClientResourceIT {
         assertThat(clientList).hasSize(databaseSizeBeforeUpdate);
         Client testClient = clientList.get(clientList.size() - 1);
         assertThat(testClient.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testClient.getLongitude()).isEqualTo(UPDATED_LONGITUDE);
-        assertThat(testClient.getLatitude()).isEqualTo(UPDATED_LATITUDE);
+        assertThat(testClient.getAddress()).isEqualTo(UPDATED_ADDRESS);
+        assertThat(testClient.getPhone()).isEqualTo(UPDATED_PHONE);
     }
 
     @Test
@@ -275,7 +275,7 @@ class ClientResourceIT {
         Client partialUpdatedClient = new Client();
         partialUpdatedClient.setId(client.getId());
 
-        partialUpdatedClient.name(UPDATED_NAME).longitude(UPDATED_LONGITUDE).latitude(UPDATED_LATITUDE);
+        partialUpdatedClient.name(UPDATED_NAME).address(UPDATED_ADDRESS).phone(UPDATED_PHONE);
 
         restClientMockMvc
             .perform(
@@ -290,8 +290,8 @@ class ClientResourceIT {
         assertThat(clientList).hasSize(databaseSizeBeforeUpdate);
         Client testClient = clientList.get(clientList.size() - 1);
         assertThat(testClient.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testClient.getLongitude()).isEqualTo(UPDATED_LONGITUDE);
-        assertThat(testClient.getLatitude()).isEqualTo(UPDATED_LATITUDE);
+        assertThat(testClient.getAddress()).isEqualTo(UPDATED_ADDRESS);
+        assertThat(testClient.getPhone()).isEqualTo(UPDATED_PHONE);
     }
 
     @Test
@@ -306,7 +306,7 @@ class ClientResourceIT {
         Client partialUpdatedClient = new Client();
         partialUpdatedClient.setId(client.getId());
 
-        partialUpdatedClient.name(UPDATED_NAME).longitude(UPDATED_LONGITUDE).latitude(UPDATED_LATITUDE);
+        partialUpdatedClient.name(UPDATED_NAME).address(UPDATED_ADDRESS).phone(UPDATED_PHONE);
 
         restClientMockMvc
             .perform(
@@ -321,8 +321,8 @@ class ClientResourceIT {
         assertThat(clientList).hasSize(databaseSizeBeforeUpdate);
         Client testClient = clientList.get(clientList.size() - 1);
         assertThat(testClient.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testClient.getLongitude()).isEqualTo(UPDATED_LONGITUDE);
-        assertThat(testClient.getLatitude()).isEqualTo(UPDATED_LATITUDE);
+        assertThat(testClient.getAddress()).isEqualTo(UPDATED_ADDRESS);
+        assertThat(testClient.getPhone()).isEqualTo(UPDATED_PHONE);
     }
 
     @Test

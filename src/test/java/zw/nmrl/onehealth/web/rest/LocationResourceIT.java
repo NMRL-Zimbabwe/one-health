@@ -35,6 +35,9 @@ class LocationResourceIT {
     private static final String DEFAULT_CODE = "AAAAAAAAAA";
     private static final String UPDATED_CODE = "BBBBBBBBBB";
 
+    private static final String DEFAULT_LOCATION_TYPE = "AAAAAAAAAA";
+    private static final String UPDATED_LOCATION_TYPE = "BBBBBBBBBB";
+
     private static final String DEFAULT_LONGITUDE = "AAAAAAAAAA";
     private static final String UPDATED_LONGITUDE = "BBBBBBBBBB";
 
@@ -65,7 +68,12 @@ class LocationResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Location createEntity(EntityManager em) {
-        Location location = new Location().name(DEFAULT_NAME).code(DEFAULT_CODE).longitude(DEFAULT_LONGITUDE).latitude(DEFAULT_LATITUDE);
+        Location location = new Location()
+            .name(DEFAULT_NAME)
+            .code(DEFAULT_CODE)
+            .locationType(DEFAULT_LOCATION_TYPE)
+            .longitude(DEFAULT_LONGITUDE)
+            .latitude(DEFAULT_LATITUDE);
         return location;
     }
 
@@ -76,7 +84,12 @@ class LocationResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Location createUpdatedEntity(EntityManager em) {
-        Location location = new Location().name(UPDATED_NAME).code(UPDATED_CODE).longitude(UPDATED_LONGITUDE).latitude(UPDATED_LATITUDE);
+        Location location = new Location()
+            .name(UPDATED_NAME)
+            .code(UPDATED_CODE)
+            .locationType(UPDATED_LOCATION_TYPE)
+            .longitude(UPDATED_LONGITUDE)
+            .latitude(UPDATED_LATITUDE);
         return location;
     }
 
@@ -100,6 +113,7 @@ class LocationResourceIT {
         Location testLocation = locationList.get(locationList.size() - 1);
         assertThat(testLocation.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testLocation.getCode()).isEqualTo(DEFAULT_CODE);
+        assertThat(testLocation.getLocationType()).isEqualTo(DEFAULT_LOCATION_TYPE);
         assertThat(testLocation.getLongitude()).isEqualTo(DEFAULT_LONGITUDE);
         assertThat(testLocation.getLatitude()).isEqualTo(DEFAULT_LATITUDE);
     }
@@ -153,6 +167,7 @@ class LocationResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(location.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
+            .andExpect(jsonPath("$.[*].locationType").value(hasItem(DEFAULT_LOCATION_TYPE)))
             .andExpect(jsonPath("$.[*].longitude").value(hasItem(DEFAULT_LONGITUDE)))
             .andExpect(jsonPath("$.[*].latitude").value(hasItem(DEFAULT_LATITUDE)));
     }
@@ -171,6 +186,7 @@ class LocationResourceIT {
             .andExpect(jsonPath("$.id").value(location.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE))
+            .andExpect(jsonPath("$.locationType").value(DEFAULT_LOCATION_TYPE))
             .andExpect(jsonPath("$.longitude").value(DEFAULT_LONGITUDE))
             .andExpect(jsonPath("$.latitude").value(DEFAULT_LATITUDE));
     }
@@ -194,7 +210,12 @@ class LocationResourceIT {
         Location updatedLocation = locationRepository.findById(location.getId()).get();
         // Disconnect from session so that the updates on updatedLocation are not directly saved in db
         em.detach(updatedLocation);
-        updatedLocation.name(UPDATED_NAME).code(UPDATED_CODE).longitude(UPDATED_LONGITUDE).latitude(UPDATED_LATITUDE);
+        updatedLocation
+            .name(UPDATED_NAME)
+            .code(UPDATED_CODE)
+            .locationType(UPDATED_LOCATION_TYPE)
+            .longitude(UPDATED_LONGITUDE)
+            .latitude(UPDATED_LATITUDE);
 
         restLocationMockMvc
             .perform(
@@ -210,6 +231,7 @@ class LocationResourceIT {
         Location testLocation = locationList.get(locationList.size() - 1);
         assertThat(testLocation.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testLocation.getCode()).isEqualTo(UPDATED_CODE);
+        assertThat(testLocation.getLocationType()).isEqualTo(UPDATED_LOCATION_TYPE);
         assertThat(testLocation.getLongitude()).isEqualTo(UPDATED_LONGITUDE);
         assertThat(testLocation.getLatitude()).isEqualTo(UPDATED_LATITUDE);
     }
@@ -282,7 +304,7 @@ class LocationResourceIT {
         Location partialUpdatedLocation = new Location();
         partialUpdatedLocation.setId(location.getId());
 
-        partialUpdatedLocation.name(UPDATED_NAME).longitude(UPDATED_LONGITUDE).latitude(UPDATED_LATITUDE);
+        partialUpdatedLocation.name(UPDATED_NAME).locationType(UPDATED_LOCATION_TYPE).longitude(UPDATED_LONGITUDE);
 
         restLocationMockMvc
             .perform(
@@ -298,8 +320,9 @@ class LocationResourceIT {
         Location testLocation = locationList.get(locationList.size() - 1);
         assertThat(testLocation.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testLocation.getCode()).isEqualTo(DEFAULT_CODE);
+        assertThat(testLocation.getLocationType()).isEqualTo(UPDATED_LOCATION_TYPE);
         assertThat(testLocation.getLongitude()).isEqualTo(UPDATED_LONGITUDE);
-        assertThat(testLocation.getLatitude()).isEqualTo(UPDATED_LATITUDE);
+        assertThat(testLocation.getLatitude()).isEqualTo(DEFAULT_LATITUDE);
     }
 
     @Test
@@ -314,7 +337,12 @@ class LocationResourceIT {
         Location partialUpdatedLocation = new Location();
         partialUpdatedLocation.setId(location.getId());
 
-        partialUpdatedLocation.name(UPDATED_NAME).code(UPDATED_CODE).longitude(UPDATED_LONGITUDE).latitude(UPDATED_LATITUDE);
+        partialUpdatedLocation
+            .name(UPDATED_NAME)
+            .code(UPDATED_CODE)
+            .locationType(UPDATED_LOCATION_TYPE)
+            .longitude(UPDATED_LONGITUDE)
+            .latitude(UPDATED_LATITUDE);
 
         restLocationMockMvc
             .perform(
@@ -330,6 +358,7 @@ class LocationResourceIT {
         Location testLocation = locationList.get(locationList.size() - 1);
         assertThat(testLocation.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testLocation.getCode()).isEqualTo(UPDATED_CODE);
+        assertThat(testLocation.getLocationType()).isEqualTo(UPDATED_LOCATION_TYPE);
         assertThat(testLocation.getLongitude()).isEqualTo(UPDATED_LONGITUDE);
         assertThat(testLocation.getLatitude()).isEqualTo(UPDATED_LATITUDE);
     }

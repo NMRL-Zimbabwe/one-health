@@ -3,7 +3,6 @@ package zw.nmrl.onehealth.domain;
 import java.io.Serializable;
 import javax.persistence.*;
 import javax.validation.constraints.*;
-import org.hibernate.annotations.Type;
 
 /**
  * A DemographicCoding.
@@ -29,8 +28,6 @@ public class DemographicCoding implements Serializable {
     @Column(name = "code", nullable = false)
     private String code;
 
-    @Lob
-    @Type(type = "org.hibernate.type.TextType")
     @Column(name = "description")
     private String description;
 

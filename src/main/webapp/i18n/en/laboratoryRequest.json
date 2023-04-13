@@ -1,0 +1,36 @@
+{
+  "oneHealthApp": {
+    "laboratoryRequest": {
+      "home": {
+        "title": "Laboratory Requests",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Laboratory Request",
+        "createOrEditLabel": "Create or edit a Laboratory Request",
+        "notFound": "No Laboratory Requests found"
+      },
+      "created": "A new Laboratory Request is created with identifier {{ param }}",
+      "updated": "A Laboratory Request is updated with identifier {{ param }}",
+      "deleted": "A Laboratory Request is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Laboratory Request {{ id }}?"
+      },
+      "detail": {
+        "title": "Laboratory Request"
+      },
+      "id": "ID",
+      "sampleId": "Sample Id",
+      "sampleTypeId": "Sample Type Id",
+      "dateCollected": "Date Collected",
+      "dateReceived": "Date Received",
+      "sampleCondition": "Sample Condition",
+      "clientId": "Client Id",
+      "priority": "Priority",
+      "status": "Status",
+      "remarks": "Remarks",
+      "locationId": "Location Id",
+      "sectorId": "Sector Id",
+      "districtId": "District Id",
+      "procinceId": "Procince Id"
+    }
+  }
+}
