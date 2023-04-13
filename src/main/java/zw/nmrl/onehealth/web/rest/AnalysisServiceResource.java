@@ -10,13 +10,19 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 import zw.nmrl.onehealth.domain.AnalysisService;
 import zw.nmrl.onehealth.repository.AnalysisServiceRepository;
+import zw.nmrl.onehealth.service.AnalysisServiceService;
 import zw.nmrl.onehealth.web.rest.errors.BadRequestAlertException;
 
 /**
@@ -24,7 +30,6 @@ import zw.nmrl.onehealth.web.rest.errors.BadRequestAlertException;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class AnalysisServiceResource {
 
     private final Logger log = LoggerFactory.getLogger(AnalysisServiceResource.class);
@@ -34,9 +39,12 @@ public class AnalysisServiceResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final AnalysisServiceService analysisServiceService;
+
     private final AnalysisServiceRepository analysisServiceRepository;
 
-    public AnalysisServiceResource(AnalysisServiceRepository analysisServiceRepository) {
+    public AnalysisServiceResource(AnalysisServiceService analysisServiceService, AnalysisServiceRepository analysisServiceRepository) {
+        this.analysisServiceService = analysisServiceService;
         this.analysisServiceRepository = analysisServiceRepository;
     }
 
@@ -54,7 +62,7 @@ public class AnalysisServiceResource {
         if (analysisService.getId() != null) {
             throw new BadRequestAlertException("A new analysisService cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        AnalysisService result = analysisServiceRepository.save(analysisService);
+        AnalysisService result = analysisServiceService.save(analysisService);
         return ResponseEntity
             .created(new URI("/api/analysis-services/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -88,7 +96,7 @@ public class AnalysisServiceResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        AnalysisService result = analysisServiceRepository.save(analysisService);
+        AnalysisService result = analysisServiceService.update(analysisService);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, analysisService.getId().toString()))
@@ -123,19 +131,7 @@ public class AnalysisServiceResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<AnalysisService> result = analysisServiceRepository
-            .findById(analysisService.getId())
-            .map(existingAnalysisService -> {
-                if (analysisService.getName() != null) {
-                    existingAnalysisService.setName(analysisService.getName());
-                }
-                if (analysisService.getCode() != null) {
-                    existingAnalysisService.setCode(analysisService.getCode());
-                }
-
-                return existingAnalysisService;
-            })
-            .map(analysisServiceRepository::save);
+        Optional<AnalysisService> result = analysisServiceService.partialUpdate(analysisService);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -146,12 +142,15 @@ public class AnalysisServiceResource {
     /**
      * {@code GET  /analysis-services} : get all the analysisServices.
      *
+     * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of analysisServices in body.
      */
     @GetMapping("/analysis-services")
-    public List<AnalysisService> getAllAnalysisServices() {
-        log.debug("REST request to get all AnalysisServices");
-        return analysisServiceRepository.findAll();
+    public ResponseEntity<List<AnalysisService>> getAllAnalysisServices(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of AnalysisServices");
+        Page<AnalysisService> page = analysisServiceService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -163,7 +162,7 @@ public class AnalysisServiceResource {
     @GetMapping("/analysis-services/{id}")
     public ResponseEntity<AnalysisService> getAnalysisService(@PathVariable Long id) {
         log.debug("REST request to get AnalysisService : {}", id);
-        Optional<AnalysisService> analysisService = analysisServiceRepository.findById(id);
+        Optional<AnalysisService> analysisService = analysisServiceService.findOne(id);
         return ResponseUtil.wrapOrNotFound(analysisService);
     }
 
@@ -176,7 +175,7 @@ public class AnalysisServiceResource {
     @DeleteMapping("/analysis-services/{id}")
     public ResponseEntity<Void> deleteAnalysisService(@PathVariable Long id) {
         log.debug("REST request to delete AnalysisService : {}", id);
-        analysisServiceRepository.deleteById(id);
+        analysisServiceService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

@@ -8,13 +8,19 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 import zw.nmrl.onehealth.domain.ClientPhone;
 import zw.nmrl.onehealth.repository.ClientPhoneRepository;
+import zw.nmrl.onehealth.service.ClientPhoneService;
 import zw.nmrl.onehealth.web.rest.errors.BadRequestAlertException;
 
 /**
@@ -22,7 +28,6 @@ import zw.nmrl.onehealth.web.rest.errors.BadRequestAlertException;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class ClientPhoneResource {
 
     private final Logger log = LoggerFactory.getLogger(ClientPhoneResource.class);
@@ -32,9 +37,12 @@ public class ClientPhoneResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final ClientPhoneService clientPhoneService;
+
     private final ClientPhoneRepository clientPhoneRepository;
 
-    public ClientPhoneResource(ClientPhoneRepository clientPhoneRepository) {
+    public ClientPhoneResource(ClientPhoneService clientPhoneService, ClientPhoneRepository clientPhoneRepository) {
+        this.clientPhoneService = clientPhoneService;
         this.clientPhoneRepository = clientPhoneRepository;
     }
 
@@ -51,7 +59,7 @@ public class ClientPhoneResource {
         if (clientPhone.getId() != null) {
             throw new BadRequestAlertException("A new clientPhone cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        ClientPhone result = clientPhoneRepository.save(clientPhone);
+        ClientPhone result = clientPhoneService.save(clientPhone);
         return ResponseEntity
             .created(new URI("/api/client-phones/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -85,7 +93,7 @@ public class ClientPhoneResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        ClientPhone result = clientPhoneRepository.save(clientPhone);
+        ClientPhone result = clientPhoneService.update(clientPhone);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, clientPhone.getId().toString()))
@@ -120,19 +128,7 @@ public class ClientPhoneResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<ClientPhone> result = clientPhoneRepository
-            .findById(clientPhone.getId())
-            .map(existingClientPhone -> {
-                if (clientPhone.getNumber() != null) {
-                    existingClientPhone.setNumber(clientPhone.getNumber());
-                }
-                if (clientPhone.getClientId() != null) {
-                    existingClientPhone.setClientId(clientPhone.getClientId());
-                }
-
-                return existingClientPhone;
-            })
-            .map(clientPhoneRepository::save);
+        Optional<ClientPhone> result = clientPhoneService.partialUpdate(clientPhone);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -143,12 +139,15 @@ public class ClientPhoneResource {
     /**
      * {@code GET  /client-phones} : get all the clientPhones.
      *
+     * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of clientPhones in body.
      */
     @GetMapping("/client-phones")
-    public List<ClientPhone> getAllClientPhones() {
-        log.debug("REST request to get all ClientPhones");
-        return clientPhoneRepository.findAll();
+    public ResponseEntity<List<ClientPhone>> getAllClientPhones(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of ClientPhones");
+        Page<ClientPhone> page = clientPhoneService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -160,7 +159,7 @@ public class ClientPhoneResource {
     @GetMapping("/client-phones/{id}")
     public ResponseEntity<ClientPhone> getClientPhone(@PathVariable Long id) {
         log.debug("REST request to get ClientPhone : {}", id);
-        Optional<ClientPhone> clientPhone = clientPhoneRepository.findById(id);
+        Optional<ClientPhone> clientPhone = clientPhoneService.findOne(id);
         return ResponseUtil.wrapOrNotFound(clientPhone);
     }
 
@@ -173,7 +172,7 @@ public class ClientPhoneResource {
     @DeleteMapping("/client-phones/{id}")
     public ResponseEntity<Void> deleteClientPhone(@PathVariable Long id) {
         log.debug("REST request to delete ClientPhone : {}", id);
-        clientPhoneRepository.deleteById(id);
+        clientPhoneService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

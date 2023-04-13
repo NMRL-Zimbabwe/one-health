@@ -10,13 +10,19 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 import zw.nmrl.onehealth.domain.Demography;
 import zw.nmrl.onehealth.repository.DemographyRepository;
+import zw.nmrl.onehealth.service.DemographyService;
 import zw.nmrl.onehealth.web.rest.errors.BadRequestAlertException;
 
 /**
@@ -24,7 +30,6 @@ import zw.nmrl.onehealth.web.rest.errors.BadRequestAlertException;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class DemographyResource {
 
     private final Logger log = LoggerFactory.getLogger(DemographyResource.class);
@@ -34,9 +39,12 @@ public class DemographyResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final DemographyService demographyService;
+
     private final DemographyRepository demographyRepository;
 
-    public DemographyResource(DemographyRepository demographyRepository) {
+    public DemographyResource(DemographyService demographyService, DemographyRepository demographyRepository) {
+        this.demographyService = demographyService;
         this.demographyRepository = demographyRepository;
     }
 
@@ -53,7 +61,7 @@ public class DemographyResource {
         if (demography.getId() != null) {
             throw new BadRequestAlertException("A new demography cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Demography result = demographyRepository.save(demography);
+        Demography result = demographyService.save(demography);
         return ResponseEntity
             .created(new URI("/api/demographies/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -87,7 +95,7 @@ public class DemographyResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Demography result = demographyRepository.save(demography);
+        Demography result = demographyService.update(demography);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, demography.getId().toString()))
@@ -122,22 +130,7 @@ public class DemographyResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Demography> result = demographyRepository
-            .findById(demography.getId())
-            .map(existingDemography -> {
-                if (demography.getRecordId() != null) {
-                    existingDemography.setRecordId(demography.getRecordId());
-                }
-                if (demography.getDemographicCodingId() != null) {
-                    existingDemography.setDemographicCodingId(demography.getDemographicCodingId());
-                }
-                if (demography.getValue() != null) {
-                    existingDemography.setValue(demography.getValue());
-                }
-
-                return existingDemography;
-            })
-            .map(demographyRepository::save);
+        Optional<Demography> result = demographyService.partialUpdate(demography);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -148,12 +141,15 @@ public class DemographyResource {
     /**
      * {@code GET  /demographies} : get all the demographies.
      *
+     * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of demographies in body.
      */
     @GetMapping("/demographies")
-    public List<Demography> getAllDemographies() {
-        log.debug("REST request to get all Demographies");
-        return demographyRepository.findAll();
+    public ResponseEntity<List<Demography>> getAllDemographies(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of Demographies");
+        Page<Demography> page = demographyService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -165,7 +161,7 @@ public class DemographyResource {
     @GetMapping("/demographies/{id}")
     public ResponseEntity<Demography> getDemography(@PathVariable Long id) {
         log.debug("REST request to get Demography : {}", id);
-        Optional<Demography> demography = demographyRepository.findById(id);
+        Optional<Demography> demography = demographyService.findOne(id);
         return ResponseUtil.wrapOrNotFound(demography);
     }
 
@@ -178,7 +174,7 @@ public class DemographyResource {
     @DeleteMapping("/demographies/{id}")
     public ResponseEntity<Void> deleteDemography(@PathVariable Long id) {
         log.debug("REST request to delete Demography : {}", id);
-        demographyRepository.deleteById(id);
+        demographyService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

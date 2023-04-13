@@ -10,13 +10,19 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 import zw.nmrl.onehealth.domain.Province;
 import zw.nmrl.onehealth.repository.ProvinceRepository;
+import zw.nmrl.onehealth.service.ProvinceService;
 import zw.nmrl.onehealth.web.rest.errors.BadRequestAlertException;
 
 /**
@@ -24,7 +30,6 @@ import zw.nmrl.onehealth.web.rest.errors.BadRequestAlertException;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class ProvinceResource {
 
     private final Logger log = LoggerFactory.getLogger(ProvinceResource.class);
@@ -34,9 +39,12 @@ public class ProvinceResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final ProvinceService provinceService;
+
     private final ProvinceRepository provinceRepository;
 
-    public ProvinceResource(ProvinceRepository provinceRepository) {
+    public ProvinceResource(ProvinceService provinceService, ProvinceRepository provinceRepository) {
+        this.provinceService = provinceService;
         this.provinceRepository = provinceRepository;
     }
 
@@ -53,7 +61,7 @@ public class ProvinceResource {
         if (province.getId() != null) {
             throw new BadRequestAlertException("A new province cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Province result = provinceRepository.save(province);
+        Province result = provinceService.save(province);
         return ResponseEntity
             .created(new URI("/api/provinces/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -87,7 +95,7 @@ public class ProvinceResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Province result = provinceRepository.save(province);
+        Province result = provinceService.update(province);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, province.getId().toString()))
@@ -122,25 +130,7 @@ public class ProvinceResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Province> result = provinceRepository
-            .findById(province.getId())
-            .map(existingProvince -> {
-                if (province.getName() != null) {
-                    existingProvince.setName(province.getName());
-                }
-                if (province.getCountryId() != null) {
-                    existingProvince.setCountryId(province.getCountryId());
-                }
-                if (province.getLongitude() != null) {
-                    existingProvince.setLongitude(province.getLongitude());
-                }
-                if (province.getLatitude() != null) {
-                    existingProvince.setLatitude(province.getLatitude());
-                }
-
-                return existingProvince;
-            })
-            .map(provinceRepository::save);
+        Optional<Province> result = provinceService.partialUpdate(province);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -151,12 +141,15 @@ public class ProvinceResource {
     /**
      * {@code GET  /provinces} : get all the provinces.
      *
+     * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of provinces in body.
      */
     @GetMapping("/provinces")
-    public List<Province> getAllProvinces() {
-        log.debug("REST request to get all Provinces");
-        return provinceRepository.findAll();
+    public ResponseEntity<List<Province>> getAllProvinces(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of Provinces");
+        Page<Province> page = provinceService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -168,7 +161,7 @@ public class ProvinceResource {
     @GetMapping("/provinces/{id}")
     public ResponseEntity<Province> getProvince(@PathVariable Long id) {
         log.debug("REST request to get Province : {}", id);
-        Optional<Province> province = provinceRepository.findById(id);
+        Optional<Province> province = provinceService.findOne(id);
         return ResponseUtil.wrapOrNotFound(province);
     }
 
@@ -181,7 +174,7 @@ public class ProvinceResource {
     @DeleteMapping("/provinces/{id}")
     public ResponseEntity<Void> deleteProvince(@PathVariable Long id) {
         log.debug("REST request to delete Province : {}", id);
-        provinceRepository.deleteById(id);
+        provinceService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

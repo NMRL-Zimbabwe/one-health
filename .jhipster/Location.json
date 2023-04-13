@@ -30,8 +30,8 @@
   "fluentMethods": true,
   "jpaMetamodelFiltering": false,
   "name": "Location",
-  "pagination": "no",
+  "pagination": "pagination",
   "readOnly": false,
   "relationships": [],
-  "service": "no"
+  "service": "serviceImpl"
 }
