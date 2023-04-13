@@ -19,8 +19,8 @@
       },
       "id": "ID",
       "name": "Name",
-      "longitude": "Longitude",
-      "latitude": "Latitude"
+      "address": "Address",
+      "phone": "Phone"
     }
   }
 }

@@ -27,6 +27,12 @@ public class Antibiotic implements Serializable {
     @Column(name = "code")
     private String code;
 
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "description")
+    private String description;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
     public Long getId() {
@@ -68,6 +74,32 @@ public class Antibiotic implements Serializable {
         this.code = code;
     }
 
+    public String getStatus() {
+        return this.status;
+    }
+
+    public Antibiotic status(String status) {
+        this.setStatus(status);
+        return this;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getDescription() {
+        return this.description;
+    }
+
+    public Antibiotic description(String description) {
+        this.setDescription(description);
+        return this;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -94,6 +126,8 @@ public class Antibiotic implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", code='" + getCode() + "'" +
+            ", status='" + getStatus() + "'" +
+            ", description='" + getDescription() + "'" +
             "}";
     }
 }

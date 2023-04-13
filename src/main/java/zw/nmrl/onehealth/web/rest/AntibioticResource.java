@@ -131,6 +131,12 @@ public class AntibioticResource {
                 if (antibiotic.getCode() != null) {
                     existingAntibiotic.setCode(antibiotic.getCode());
                 }
+                if (antibiotic.getStatus() != null) {
+                    existingAntibiotic.setStatus(antibiotic.getStatus());
+                }
+                if (antibiotic.getDescription() != null) {
+                    existingAntibiotic.setDescription(antibiotic.getDescription());
+                }
 
                 return existingAntibiotic;
             })

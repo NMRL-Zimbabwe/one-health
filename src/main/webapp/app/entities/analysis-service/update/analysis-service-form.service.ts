@@ -19,6 +19,7 @@ type AnalysisServiceFormDefaults = Pick<NewAnalysisService, 'id'>;
 type AnalysisServiceFormGroupContent = {
   id: FormControl<IAnalysisService['id'] | NewAnalysisService['id']>;
   name: FormControl<IAnalysisService['name']>;
+  code: FormControl<IAnalysisService['code']>;
 };
 
 export type AnalysisServiceFormGroup = FormGroup<AnalysisServiceFormGroupContent>;
@@ -41,6 +42,7 @@ export class AnalysisServiceFormService {
       name: new FormControl(analysisServiceRawValue.name, {
         validators: [Validators.required],
       }),
+      code: new FormControl(analysisServiceRawValue.code),
     });
   }
 

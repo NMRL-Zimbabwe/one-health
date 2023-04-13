@@ -20,6 +20,7 @@
       "id": "ID",
       "name": "Name",
       "code": "Code",
+      "locationType": "Location Type",
       "longitude": "Longitude",
       "latitude": "Latitude"
     }

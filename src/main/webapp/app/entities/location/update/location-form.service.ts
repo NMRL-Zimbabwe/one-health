@@ -20,6 +20,7 @@ type LocationFormGroupContent = {
   id: FormControl<ILocation['id'] | NewLocation['id']>;
   name: FormControl<ILocation['name']>;
   code: FormControl<ILocation['code']>;
+  locationType: FormControl<ILocation['locationType']>;
   longitude: FormControl<ILocation['longitude']>;
   latitude: FormControl<ILocation['latitude']>;
 };
@@ -45,6 +46,7 @@ export class LocationFormService {
         validators: [Validators.required],
       }),
       code: new FormControl(locationRawValue.code),
+      locationType: new FormControl(locationRawValue.locationType),
       longitude: new FormControl(locationRawValue.longitude),
       latitude: new FormControl(locationRawValue.latitude),
     });

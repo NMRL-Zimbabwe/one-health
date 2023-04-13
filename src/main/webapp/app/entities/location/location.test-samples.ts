@@ -6,22 +6,24 @@ export const sampleWithRequiredData: ILocation = {
 };
 
 export const sampleWithPartialData: ILocation = {
-  id: 73848,
-  name: 'Beauty open 1080p',
-  code: 'hard Slovakia Directives',
-  latitude: 'navigating solutions Fresh',
+  id: 92404,
+  name: 'Island',
+  code: 'indigo Virginia Arkansas',
+  longitude: 'Unbranded Unbranded integrate',
+  latitude: 'Checking',
 };
 
 export const sampleWithFullData: ILocation = {
-  id: 14345,
-  name: 'network',
-  code: 'Small',
-  longitude: 'Shoes',
-  latitude: 'viral Ball real-time',
+  id: 85052,
+  name: 'enable network Steel',
+  code: 'Business-focused Shoes',
+  locationType: 'viral Ball real-time',
+  longitude: 'Data program hacking',
+  latitude: 'Books capacitor',
 };
 
 export const sampleWithNewData: NewLocation = {
-  name: 'Data program hacking',
+  name: 'Assimilated Cambridgeshire up',
   id: null,
 };
 

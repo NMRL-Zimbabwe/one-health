@@ -1,0 +1,172 @@
+<div>
+  <h2 id="page-heading" data-cy="LaboratoryRequestHeading">
+    <span jhiTranslate="oneHealthApp.laboratoryRequest.home.title">Laboratory Requests</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="oneHealthApp.laboratoryRequest.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-laboratory-request"
+        [routerLink]="['/laboratory-request/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="oneHealthApp.laboratoryRequest.home.createLabel"> Create a new Laboratory Request </span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  <div class="alert alert-warning" id="no-result" *ngIf="laboratoryRequests?.length === 0">
+    <span jhiTranslate="oneHealthApp.laboratoryRequest.home.notFound">No Laboratory Requests found</span>
+  </div>
+
+  <div class="table-responsive table-entities" id="entities" *ngIf="laboratoryRequests && laboratoryRequests.length > 0">
+    <table class="table table-striped" aria-describedby="page-heading">
+      <thead>
+        <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+          <th scope="col" jhiSortBy="id">
+            <div class="d-flex">
+              <span jhiTranslate="global.field.id">ID</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="sampleId">
+            <div class="d-flex">
+              <span jhiTranslate="oneHealthApp.laboratoryRequest.sampleId">Sample Id</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="sampleTypeId">
+            <div class="d-flex">
+              <span jhiTranslate="oneHealthApp.laboratoryRequest.sampleTypeId">Sample Type Id</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="dateCollected">
+            <div class="d-flex">
+              <span jhiTranslate="oneHealthApp.laboratoryRequest.dateCollected">Date Collected</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="dateReceived">
+            <div class="d-flex">
+              <span jhiTranslate="oneHealthApp.laboratoryRequest.dateReceived">Date Received</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="sampleCondition">
+            <div class="d-flex">
+              <span jhiTranslate="oneHealthApp.laboratoryRequest.sampleCondition">Sample Condition</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="clientId">
+            <div class="d-flex">
+              <span jhiTranslate="oneHealthApp.laboratoryRequest.clientId">Client Id</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="priority">
+            <div class="d-flex">
+              <span jhiTranslate="oneHealthApp.laboratoryRequest.priority">Priority</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="status">
+            <div class="d-flex">
+              <span jhiTranslate="oneHealthApp.laboratoryRequest.status">Status</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="remarks">
+            <div class="d-flex">
+              <span jhiTranslate="oneHealthApp.laboratoryRequest.remarks">Remarks</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="locationId">
+            <div class="d-flex">
+              <span jhiTranslate="oneHealthApp.laboratoryRequest.locationId">Location Id</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="sectorId">
+            <div class="d-flex">
+              <span jhiTranslate="oneHealthApp.laboratoryRequest.sectorId">Sector Id</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="districtId">
+            <div class="d-flex">
+              <span jhiTranslate="oneHealthApp.laboratoryRequest.districtId">District Id</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="procinceId">
+            <div class="d-flex">
+              <span jhiTranslate="oneHealthApp.laboratoryRequest.procinceId">Procince Id</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let laboratoryRequest of laboratoryRequests; trackBy: trackId" data-cy="entityTable">
+          <td>
+            <a [routerLink]="['/laboratory-request', laboratoryRequest.id, 'view']">{{ laboratoryRequest.id }}</a>
+          </td>
+          <td>{{ laboratoryRequest.sampleId }}</td>
+          <td>{{ laboratoryRequest.sampleTypeId }}</td>
+          <td>{{ laboratoryRequest.dateCollected | formatMediumDate }}</td>
+          <td>{{ laboratoryRequest.dateReceived | formatMediumDate }}</td>
+          <td>{{ laboratoryRequest.sampleCondition }}</td>
+          <td>{{ laboratoryRequest.clientId }}</td>
+          <td>{{ laboratoryRequest.priority }}</td>
+          <td>{{ laboratoryRequest.status }}</td>
+          <td>{{ laboratoryRequest.remarks }}</td>
+          <td>{{ laboratoryRequest.locationId }}</td>
+          <td>{{ laboratoryRequest.sectorId }}</td>
+          <td>{{ laboratoryRequest.districtId }}</td>
+          <td>{{ laboratoryRequest.procinceId }}</td>
+          <td class="text-end">
+            <div class="btn-group">
+              <button
+                type="submit"
+                [routerLink]="['/laboratory-request', laboratoryRequest.id, 'view']"
+                class="btn btn-info btn-sm"
+                data-cy="entityDetailsButton"
+              >
+                <fa-icon icon="eye"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+              </button>
+
+              <button
+                type="submit"
+                [routerLink]="['/laboratory-request', laboratoryRequest.id, 'edit']"
+                class="btn btn-primary btn-sm"
+                data-cy="entityEditButton"
+              >
+                <fa-icon icon="pencil-alt"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+              </button>
+
+              <button type="submit" (click)="delete(laboratoryRequest)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                <fa-icon icon="times"></fa-icon>
+                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

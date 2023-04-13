@@ -131,6 +131,9 @@ public class LocationResource {
                 if (location.getCode() != null) {
                     existingLocation.setCode(location.getCode());
                 }
+                if (location.getLocationType() != null) {
+                    existingLocation.setLocationType(location.getLocationType());
+                }
                 if (location.getLongitude() != null) {
                     existingLocation.setLongitude(location.getLongitude());
                 }

@@ -21,6 +21,10 @@
         "district": "District",
         "province": "Province",
         "country": "Country",
+        "laboratoryRequest": "Laboratory Request",
+        "organism": "Organism",
+        "clientAddress": "Client Address",
+        "clientPhone": "Client Phone",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

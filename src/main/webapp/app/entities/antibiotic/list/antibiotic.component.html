@@ -50,6 +50,18 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+          <th scope="col" jhiSortBy="status">
+            <div class="d-flex">
+              <span jhiTranslate="oneHealthApp.antibiotic.status">Status</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
+          <th scope="col" jhiSortBy="description">
+            <div class="d-flex">
+              <span jhiTranslate="oneHealthApp.antibiotic.description">Description</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
           <th scope="col"></th>
         </tr>
       </thead>
@@ -60,6 +72,8 @@
           </td>
           <td>{{ antibiotic.name }}</td>
           <td>{{ antibiotic.code }}</td>
+          <td>{{ antibiotic.status }}</td>
+          <td>{{ antibiotic.description }}</td>
           <td class="text-end">
             <div class="btn-group">
               <button

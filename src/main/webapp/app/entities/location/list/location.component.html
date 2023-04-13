@@ -50,6 +50,12 @@
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
+          <th scope="col" jhiSortBy="locationType">
+            <div class="d-flex">
+              <span jhiTranslate="oneHealthApp.location.locationType">Location Type</span>
+              <fa-icon class="p-1" icon="sort"></fa-icon>
+            </div>
+          </th>
           <th scope="col" jhiSortBy="longitude">
             <div class="d-flex">
               <span jhiTranslate="oneHealthApp.location.longitude">Longitude</span>
@@ -72,6 +78,7 @@
           </td>
           <td>{{ location.name }}</td>
           <td>{{ location.code }}</td>
+          <td>{{ location.locationType }}</td>
           <td>{{ location.longitude }}</td>
           <td>{{ location.latitude }}</td>
           <td class="text-end">

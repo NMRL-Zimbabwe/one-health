@@ -11,11 +11,11 @@
       "fieldValidateRules": ["required"]
     },
     {
-      "fieldName": "longitude",
+      "fieldName": "address",
       "fieldType": "String"
     },
     {
-      "fieldName": "latitude",
+      "fieldName": "phone",
       "fieldType": "String"
     }
   ],

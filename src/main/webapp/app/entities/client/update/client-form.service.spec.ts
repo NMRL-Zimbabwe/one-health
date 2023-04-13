@@ -21,8 +21,8 @@ describe('Client Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             name: expect.any(Object),
-            longitude: expect.any(Object),
-            latitude: expect.any(Object),
+            address: expect.any(Object),
+            phone: expect.any(Object),
           })
         );
       });
@@ -34,8 +34,8 @@ describe('Client Form Service', () => {
           expect.objectContaining({
             id: expect.any(Object),
             name: expect.any(Object),
-            longitude: expect.any(Object),
-            latitude: expect.any(Object),
+            address: expect.any(Object),
+            phone: expect.any(Object),
           })
         );
       });

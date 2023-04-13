@@ -6,18 +6,22 @@ export const sampleWithRequiredData: IAntibiotic = {
 };
 
 export const sampleWithPartialData: IAntibiotic = {
-  id: 96820,
-  name: 'Mandatory Latvian',
+  id: 24754,
+  name: 'Dynamic Avon',
+  status: 'Architect Clothing relationships',
+  description: 'yellow Fresh',
 };
 
 export const sampleWithFullData: IAntibiotic = {
-  id: 11449,
-  name: 'Strategist Books',
-  code: 'relationships sticky Liaison',
+  id: 31201,
+  name: 'sensor neural Personal',
+  code: 'Reunion payment withdrawal',
+  status: 'Soft SCSI Club',
+  description: 'collaborative bottom-line Senior',
 };
 
 export const sampleWithNewData: NewAntibiotic = {
-  name: 'synergy',
+  name: 'Montenegro',
   id: null,
 };
 

@@ -32,6 +32,9 @@ class AnalysisServiceResourceIT {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
+    private static final String DEFAULT_CODE = "AAAAAAAAAA";
+    private static final String UPDATED_CODE = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/analysis-services";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -56,7 +59,7 @@ class AnalysisServiceResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static AnalysisService createEntity(EntityManager em) {
-        AnalysisService analysisService = new AnalysisService().name(DEFAULT_NAME);
+        AnalysisService analysisService = new AnalysisService().name(DEFAULT_NAME).code(DEFAULT_CODE);
         return analysisService;
     }
 
@@ -67,7 +70,7 @@ class AnalysisServiceResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static AnalysisService createUpdatedEntity(EntityManager em) {
-        AnalysisService analysisService = new AnalysisService().name(UPDATED_NAME);
+        AnalysisService analysisService = new AnalysisService().name(UPDATED_NAME).code(UPDATED_CODE);
         return analysisService;
     }
 
@@ -92,6 +95,7 @@ class AnalysisServiceResourceIT {
         assertThat(analysisServiceList).hasSize(databaseSizeBeforeCreate + 1);
         AnalysisService testAnalysisService = analysisServiceList.get(analysisServiceList.size() - 1);
         assertThat(testAnalysisService.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testAnalysisService.getCode()).isEqualTo(DEFAULT_CODE);
     }
 
     @Test
@@ -145,7 +149,8 @@ class AnalysisServiceResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(analysisService.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)));
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
+            .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)));
     }
 
     @Test
@@ -160,7 +165,8 @@ class AnalysisServiceResourceIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(jsonPath("$.id").value(analysisService.getId().intValue()))
-            .andExpect(jsonPath("$.name").value(DEFAULT_NAME));
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
+            .andExpect(jsonPath("$.code").value(DEFAULT_CODE));
     }
 
     @Test
@@ -182,7 +188,7 @@ class AnalysisServiceResourceIT {
         AnalysisService updatedAnalysisService = analysisServiceRepository.findById(analysisService.getId()).get();
         // Disconnect from session so that the updates on updatedAnalysisService are not directly saved in db
         em.detach(updatedAnalysisService);
-        updatedAnalysisService.name(UPDATED_NAME);
+        updatedAnalysisService.name(UPDATED_NAME).code(UPDATED_CODE);
 
         restAnalysisServiceMockMvc
             .perform(
@@ -197,6 +203,7 @@ class AnalysisServiceResourceIT {
         assertThat(analysisServiceList).hasSize(databaseSizeBeforeUpdate);
         AnalysisService testAnalysisService = analysisServiceList.get(analysisServiceList.size() - 1);
         assertThat(testAnalysisService.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testAnalysisService.getCode()).isEqualTo(UPDATED_CODE);
     }
 
     @Test
@@ -269,7 +276,7 @@ class AnalysisServiceResourceIT {
         AnalysisService partialUpdatedAnalysisService = new AnalysisService();
         partialUpdatedAnalysisService.setId(analysisService.getId());
 
-        partialUpdatedAnalysisService.name(UPDATED_NAME);
+        partialUpdatedAnalysisService.name(UPDATED_NAME).code(UPDATED_CODE);
 
         restAnalysisServiceMockMvc
             .perform(
@@ -284,6 +291,7 @@ class AnalysisServiceResourceIT {
         assertThat(analysisServiceList).hasSize(databaseSizeBeforeUpdate);
         AnalysisService testAnalysisService = analysisServiceList.get(analysisServiceList.size() - 1);
         assertThat(testAnalysisService.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testAnalysisService.getCode()).isEqualTo(UPDATED_CODE);
     }
 
     @Test
@@ -298,7 +306,7 @@ class AnalysisServiceResourceIT {
         AnalysisService partialUpdatedAnalysisService = new AnalysisService();
         partialUpdatedAnalysisService.setId(analysisService.getId());
 
-        partialUpdatedAnalysisService.name(UPDATED_NAME);
+        partialUpdatedAnalysisService.name(UPDATED_NAME).code(UPDATED_CODE);
 
         restAnalysisServiceMockMvc
             .perform(
@@ -313,6 +321,7 @@ class AnalysisServiceResourceIT {
         assertThat(analysisServiceList).hasSize(databaseSizeBeforeUpdate);
         AnalysisService testAnalysisService = analysisServiceList.get(analysisServiceList.size() - 1);
         assertThat(testAnalysisService.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testAnalysisService.getCode()).isEqualTo(UPDATED_CODE);
     }
 
     @Test

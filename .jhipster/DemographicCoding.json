@@ -17,8 +17,7 @@
     },
     {
       "fieldName": "description",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "text"
+      "fieldType": "String"
     }
   ],
   "fluentMethods": true,

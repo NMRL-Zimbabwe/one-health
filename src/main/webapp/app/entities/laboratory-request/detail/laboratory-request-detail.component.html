@@ -1,0 +1,82 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <div *ngIf="laboratoryRequest">
+      <h2 data-cy="laboratoryRequestDetailsHeading">
+        <span jhiTranslate="oneHealthApp.laboratoryRequest.detail.title">Laboratory Request</span>
+      </h2>
+
+      <hr />
+
+      <jhi-alert-error></jhi-alert-error>
+
+      <jhi-alert></jhi-alert>
+
+      <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="global.field.id">ID</span></dt>
+        <dd>
+          <span>{{ laboratoryRequest.id }}</span>
+        </dd>
+        <dt><span jhiTranslate="oneHealthApp.laboratoryRequest.sampleId">Sample Id</span></dt>
+        <dd>
+          <span>{{ laboratoryRequest.sampleId }}</span>
+        </dd>
+        <dt><span jhiTranslate="oneHealthApp.laboratoryRequest.sampleTypeId">Sample Type Id</span></dt>
+        <dd>
+          <span>{{ laboratoryRequest.sampleTypeId }}</span>
+        </dd>
+        <dt><span jhiTranslate="oneHealthApp.laboratoryRequest.dateCollected">Date Collected</span></dt>
+        <dd>
+          <span>{{ laboratoryRequest.dateCollected | formatMediumDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="oneHealthApp.laboratoryRequest.dateReceived">Date Received</span></dt>
+        <dd>
+          <span>{{ laboratoryRequest.dateReceived | formatMediumDate }}</span>
+        </dd>
+        <dt><span jhiTranslate="oneHealthApp.laboratoryRequest.sampleCondition">Sample Condition</span></dt>
+        <dd>
+          <span>{{ laboratoryRequest.sampleCondition }}</span>
+        </dd>
+        <dt><span jhiTranslate="oneHealthApp.laboratoryRequest.clientId">Client Id</span></dt>
+        <dd>
+          <span>{{ laboratoryRequest.clientId }}</span>
+        </dd>
+        <dt><span jhiTranslate="oneHealthApp.laboratoryRequest.priority">Priority</span></dt>
+        <dd>
+          <span>{{ laboratoryRequest.priority }}</span>
+        </dd>
+        <dt><span jhiTranslate="oneHealthApp.laboratoryRequest.status">Status</span></dt>
+        <dd>
+          <span>{{ laboratoryRequest.status }}</span>
+        </dd>
+        <dt><span jhiTranslate="oneHealthApp.laboratoryRequest.remarks">Remarks</span></dt>
+        <dd>
+          <span>{{ laboratoryRequest.remarks }}</span>
+        </dd>
+        <dt><span jhiTranslate="oneHealthApp.laboratoryRequest.locationId">Location Id</span></dt>
+        <dd>
+          <span>{{ laboratoryRequest.locationId }}</span>
+        </dd>
+        <dt><span jhiTranslate="oneHealthApp.laboratoryRequest.sectorId">Sector Id</span></dt>
+        <dd>
+          <span>{{ laboratoryRequest.sectorId }}</span>
+        </dd>
+        <dt><span jhiTranslate="oneHealthApp.laboratoryRequest.districtId">District Id</span></dt>
+        <dd>
+          <span>{{ laboratoryRequest.districtId }}</span>
+        </dd>
+        <dt><span jhiTranslate="oneHealthApp.laboratoryRequest.procinceId">Procince Id</span></dt>
+        <dd>
+          <span>{{ laboratoryRequest.procinceId }}</span>
+        </dd>
+      </dl>
+
+      <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+        <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+      </button>
+
+      <button type="button" [routerLink]="['/laboratory-request', laboratoryRequest.id, 'edit']" class="btn btn-primary">
+        <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+      </button>
+    </div>
+  </div>
+</div>

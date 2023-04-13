@@ -1,0 +1,24 @@
+{
+  "applications": "*",
+  "changelogDate": "20230413100607",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "client_address",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "clientId",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "ClientAddress",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}

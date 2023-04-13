@@ -27,6 +27,9 @@ public class Location implements Serializable {
     @Column(name = "code")
     private String code;
 
+    @Column(name = "location_type")
+    private String locationType;
+
     @Column(name = "longitude")
     private String longitude;
 
@@ -72,6 +75,19 @@ public class Location implements Serializable {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public String getLocationType() {
+        return this.locationType;
+    }
+
+    public Location locationType(String locationType) {
+        this.setLocationType(locationType);
+        return this;
+    }
+
+    public void setLocationType(String locationType) {
+        this.locationType = locationType;
     }
 
     public String getLongitude() {
@@ -126,6 +142,7 @@ public class Location implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", code='" + getCode() + "'" +
+            ", locationType='" + getLocationType() + "'" +
             ", longitude='" + getLongitude() + "'" +
             ", latitude='" + getLatitude() + "'" +
             "}";

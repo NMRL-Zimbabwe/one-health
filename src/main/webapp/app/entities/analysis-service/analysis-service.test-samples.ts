@@ -6,17 +6,19 @@ export const sampleWithRequiredData: IAnalysisService = {
 };
 
 export const sampleWithPartialData: IAnalysisService = {
-  id: 82166,
-  name: 'panel',
+  id: 10982,
+  name: 'Granite Connecticut Shoes',
+  code: 'Granite navigating',
 };
 
 export const sampleWithFullData: IAnalysisService = {
-  id: 68534,
-  name: 'Wooden Bedfordshire',
+  id: 93014,
+  name: 'Small',
+  code: 'real-time bus',
 };
 
 export const sampleWithNewData: NewAnalysisService = {
-  name: 'Extensions',
+  name: 'loyalty',
   id: null,
 };
 

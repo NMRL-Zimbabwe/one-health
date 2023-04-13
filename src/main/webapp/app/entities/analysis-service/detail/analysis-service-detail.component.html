@@ -20,6 +20,10 @@
         <dd>
           <span>{{ analysisService.name }}</span>
         </dd>
+        <dt><span jhiTranslate="oneHealthApp.analysisService.code">Code</span></dt>
+        <dd>
+          <span>{{ analysisService.code }}</span>
+        </dd>
       </dl>
 
       <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">

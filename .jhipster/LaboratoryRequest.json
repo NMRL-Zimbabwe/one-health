@@ -1,0 +1,70 @@
+{
+  "applications": "*",
+  "changelogDate": "20230413100605",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "laboratory_request",
+  "fields": [
+    {
+      "fieldName": "sampleId",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "sampleTypeId",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "dateCollected",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "dateReceived",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "sampleCondition",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "clientId",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "priority",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "remarks",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "locationId",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "sectorId",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "districtId",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "procinceId",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "LaboratoryRequest",
+  "pagination": "no",
+  "readOnly": false,
+  "relationships": [],
+  "service": "no"
+}
