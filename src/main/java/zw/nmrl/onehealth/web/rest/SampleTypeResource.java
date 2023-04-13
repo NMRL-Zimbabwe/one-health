@@ -10,13 +10,19 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 import zw.nmrl.onehealth.domain.SampleType;
 import zw.nmrl.onehealth.repository.SampleTypeRepository;
+import zw.nmrl.onehealth.service.SampleTypeService;
 import zw.nmrl.onehealth.web.rest.errors.BadRequestAlertException;
 
 /**
@@ -24,7 +30,6 @@ import zw.nmrl.onehealth.web.rest.errors.BadRequestAlertException;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class SampleTypeResource {
 
     private final Logger log = LoggerFactory.getLogger(SampleTypeResource.class);
@@ -34,9 +39,12 @@ public class SampleTypeResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final SampleTypeService sampleTypeService;
+
     private final SampleTypeRepository sampleTypeRepository;
 
-    public SampleTypeResource(SampleTypeRepository sampleTypeRepository) {
+    public SampleTypeResource(SampleTypeService sampleTypeService, SampleTypeRepository sampleTypeRepository) {
+        this.sampleTypeService = sampleTypeService;
         this.sampleTypeRepository = sampleTypeRepository;
     }
 
@@ -53,7 +61,7 @@ public class SampleTypeResource {
         if (sampleType.getId() != null) {
             throw new BadRequestAlertException("A new sampleType cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        SampleType result = sampleTypeRepository.save(sampleType);
+        SampleType result = sampleTypeService.save(sampleType);
         return ResponseEntity
             .created(new URI("/api/sample-types/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -87,7 +95,7 @@ public class SampleTypeResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        SampleType result = sampleTypeRepository.save(sampleType);
+        SampleType result = sampleTypeService.update(sampleType);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, sampleType.getId().toString()))
@@ -122,19 +130,7 @@ public class SampleTypeResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<SampleType> result = sampleTypeRepository
-            .findById(sampleType.getId())
-            .map(existingSampleType -> {
-                if (sampleType.getName() != null) {
-                    existingSampleType.setName(sampleType.getName());
-                }
-                if (sampleType.getCode() != null) {
-                    existingSampleType.setCode(sampleType.getCode());
-                }
-
-                return existingSampleType;
-            })
-            .map(sampleTypeRepository::save);
+        Optional<SampleType> result = sampleTypeService.partialUpdate(sampleType);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -145,12 +141,15 @@ public class SampleTypeResource {
     /**
      * {@code GET  /sample-types} : get all the sampleTypes.
      *
+     * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of sampleTypes in body.
      */
     @GetMapping("/sample-types")
-    public List<SampleType> getAllSampleTypes() {
-        log.debug("REST request to get all SampleTypes");
-        return sampleTypeRepository.findAll();
+    public ResponseEntity<List<SampleType>> getAllSampleTypes(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of SampleTypes");
+        Page<SampleType> page = sampleTypeService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -162,7 +161,7 @@ public class SampleTypeResource {
     @GetMapping("/sample-types/{id}")
     public ResponseEntity<SampleType> getSampleType(@PathVariable Long id) {
         log.debug("REST request to get SampleType : {}", id);
-        Optional<SampleType> sampleType = sampleTypeRepository.findById(id);
+        Optional<SampleType> sampleType = sampleTypeService.findOne(id);
         return ResponseUtil.wrapOrNotFound(sampleType);
     }
 
@@ -175,7 +174,7 @@ public class SampleTypeResource {
     @DeleteMapping("/sample-types/{id}")
     public ResponseEntity<Void> deleteSampleType(@PathVariable Long id) {
         log.debug("REST request to delete SampleType : {}", id);
-        sampleTypeRepository.deleteById(id);
+        sampleTypeService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

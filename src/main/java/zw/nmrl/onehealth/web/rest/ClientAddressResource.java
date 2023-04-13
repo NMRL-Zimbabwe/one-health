@@ -8,13 +8,19 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 import zw.nmrl.onehealth.domain.ClientAddress;
 import zw.nmrl.onehealth.repository.ClientAddressRepository;
+import zw.nmrl.onehealth.service.ClientAddressService;
 import zw.nmrl.onehealth.web.rest.errors.BadRequestAlertException;
 
 /**
@@ -22,7 +28,6 @@ import zw.nmrl.onehealth.web.rest.errors.BadRequestAlertException;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class ClientAddressResource {
 
     private final Logger log = LoggerFactory.getLogger(ClientAddressResource.class);
@@ -32,9 +37,12 @@ public class ClientAddressResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final ClientAddressService clientAddressService;
+
     private final ClientAddressRepository clientAddressRepository;
 
-    public ClientAddressResource(ClientAddressRepository clientAddressRepository) {
+    public ClientAddressResource(ClientAddressService clientAddressService, ClientAddressRepository clientAddressRepository) {
+        this.clientAddressService = clientAddressService;
         this.clientAddressRepository = clientAddressRepository;
     }
 
@@ -51,7 +59,7 @@ public class ClientAddressResource {
         if (clientAddress.getId() != null) {
             throw new BadRequestAlertException("A new clientAddress cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        ClientAddress result = clientAddressRepository.save(clientAddress);
+        ClientAddress result = clientAddressService.save(clientAddress);
         return ResponseEntity
             .created(new URI("/api/client-addresses/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -85,7 +93,7 @@ public class ClientAddressResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        ClientAddress result = clientAddressRepository.save(clientAddress);
+        ClientAddress result = clientAddressService.update(clientAddress);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, clientAddress.getId().toString()))
@@ -120,19 +128,7 @@ public class ClientAddressResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<ClientAddress> result = clientAddressRepository
-            .findById(clientAddress.getId())
-            .map(existingClientAddress -> {
-                if (clientAddress.getName() != null) {
-                    existingClientAddress.setName(clientAddress.getName());
-                }
-                if (clientAddress.getClientId() != null) {
-                    existingClientAddress.setClientId(clientAddress.getClientId());
-                }
-
-                return existingClientAddress;
-            })
-            .map(clientAddressRepository::save);
+        Optional<ClientAddress> result = clientAddressService.partialUpdate(clientAddress);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -143,12 +139,15 @@ public class ClientAddressResource {
     /**
      * {@code GET  /client-addresses} : get all the clientAddresses.
      *
+     * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of clientAddresses in body.
      */
     @GetMapping("/client-addresses")
-    public List<ClientAddress> getAllClientAddresses() {
-        log.debug("REST request to get all ClientAddresses");
-        return clientAddressRepository.findAll();
+    public ResponseEntity<List<ClientAddress>> getAllClientAddresses(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of ClientAddresses");
+        Page<ClientAddress> page = clientAddressService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -160,7 +159,7 @@ public class ClientAddressResource {
     @GetMapping("/client-addresses/{id}")
     public ResponseEntity<ClientAddress> getClientAddress(@PathVariable Long id) {
         log.debug("REST request to get ClientAddress : {}", id);
-        Optional<ClientAddress> clientAddress = clientAddressRepository.findById(id);
+        Optional<ClientAddress> clientAddress = clientAddressService.findOne(id);
         return ResponseUtil.wrapOrNotFound(clientAddress);
     }
 
@@ -173,7 +172,7 @@ public class ClientAddressResource {
     @DeleteMapping("/client-addresses/{id}")
     public ResponseEntity<Void> deleteClientAddress(@PathVariable Long id) {
         log.debug("REST request to delete ClientAddress : {}", id);
-        clientAddressRepository.deleteById(id);
+        clientAddressService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

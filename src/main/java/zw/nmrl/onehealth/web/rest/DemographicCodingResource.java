@@ -10,13 +10,19 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 import zw.nmrl.onehealth.domain.DemographicCoding;
 import zw.nmrl.onehealth.repository.DemographicCodingRepository;
+import zw.nmrl.onehealth.service.DemographicCodingService;
 import zw.nmrl.onehealth.web.rest.errors.BadRequestAlertException;
 
 /**
@@ -24,7 +30,6 @@ import zw.nmrl.onehealth.web.rest.errors.BadRequestAlertException;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class DemographicCodingResource {
 
     private final Logger log = LoggerFactory.getLogger(DemographicCodingResource.class);
@@ -34,9 +39,15 @@ public class DemographicCodingResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final DemographicCodingService demographicCodingService;
+
     private final DemographicCodingRepository demographicCodingRepository;
 
-    public DemographicCodingResource(DemographicCodingRepository demographicCodingRepository) {
+    public DemographicCodingResource(
+        DemographicCodingService demographicCodingService,
+        DemographicCodingRepository demographicCodingRepository
+    ) {
+        this.demographicCodingService = demographicCodingService;
         this.demographicCodingRepository = demographicCodingRepository;
     }
 
@@ -54,7 +65,7 @@ public class DemographicCodingResource {
         if (demographicCoding.getId() != null) {
             throw new BadRequestAlertException("A new demographicCoding cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        DemographicCoding result = demographicCodingRepository.save(demographicCoding);
+        DemographicCoding result = demographicCodingService.save(demographicCoding);
         return ResponseEntity
             .created(new URI("/api/demographic-codings/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -88,7 +99,7 @@ public class DemographicCodingResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        DemographicCoding result = demographicCodingRepository.save(demographicCoding);
+        DemographicCoding result = demographicCodingService.update(demographicCoding);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, demographicCoding.getId().toString()))
@@ -123,22 +134,7 @@ public class DemographicCodingResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<DemographicCoding> result = demographicCodingRepository
-            .findById(demographicCoding.getId())
-            .map(existingDemographicCoding -> {
-                if (demographicCoding.getName() != null) {
-                    existingDemographicCoding.setName(demographicCoding.getName());
-                }
-                if (demographicCoding.getCode() != null) {
-                    existingDemographicCoding.setCode(demographicCoding.getCode());
-                }
-                if (demographicCoding.getDescription() != null) {
-                    existingDemographicCoding.setDescription(demographicCoding.getDescription());
-                }
-
-                return existingDemographicCoding;
-            })
-            .map(demographicCodingRepository::save);
+        Optional<DemographicCoding> result = demographicCodingService.partialUpdate(demographicCoding);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -149,12 +145,17 @@ public class DemographicCodingResource {
     /**
      * {@code GET  /demographic-codings} : get all the demographicCodings.
      *
+     * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of demographicCodings in body.
      */
     @GetMapping("/demographic-codings")
-    public List<DemographicCoding> getAllDemographicCodings() {
-        log.debug("REST request to get all DemographicCodings");
-        return demographicCodingRepository.findAll();
+    public ResponseEntity<List<DemographicCoding>> getAllDemographicCodings(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get a page of DemographicCodings");
+        Page<DemographicCoding> page = demographicCodingService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -166,7 +167,7 @@ public class DemographicCodingResource {
     @GetMapping("/demographic-codings/{id}")
     public ResponseEntity<DemographicCoding> getDemographicCoding(@PathVariable Long id) {
         log.debug("REST request to get DemographicCoding : {}", id);
-        Optional<DemographicCoding> demographicCoding = demographicCodingRepository.findById(id);
+        Optional<DemographicCoding> demographicCoding = demographicCodingService.findOne(id);
         return ResponseUtil.wrapOrNotFound(demographicCoding);
     }
 
@@ -179,7 +180,7 @@ public class DemographicCodingResource {
     @DeleteMapping("/demographic-codings/{id}")
     public ResponseEntity<Void> deleteDemographicCoding(@PathVariable Long id) {
         log.debug("REST request to delete DemographicCoding : {}", id);
-        demographicCodingRepository.deleteById(id);
+        demographicCodingService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

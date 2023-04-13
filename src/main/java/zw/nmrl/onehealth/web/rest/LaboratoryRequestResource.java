@@ -10,13 +10,19 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 import zw.nmrl.onehealth.domain.LaboratoryRequest;
 import zw.nmrl.onehealth.repository.LaboratoryRequestRepository;
+import zw.nmrl.onehealth.service.LaboratoryRequestService;
 import zw.nmrl.onehealth.web.rest.errors.BadRequestAlertException;
 
 /**
@@ -24,7 +30,6 @@ import zw.nmrl.onehealth.web.rest.errors.BadRequestAlertException;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class LaboratoryRequestResource {
 
     private final Logger log = LoggerFactory.getLogger(LaboratoryRequestResource.class);
@@ -34,9 +39,15 @@ public class LaboratoryRequestResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final LaboratoryRequestService laboratoryRequestService;
+
     private final LaboratoryRequestRepository laboratoryRequestRepository;
 
-    public LaboratoryRequestResource(LaboratoryRequestRepository laboratoryRequestRepository) {
+    public LaboratoryRequestResource(
+        LaboratoryRequestService laboratoryRequestService,
+        LaboratoryRequestRepository laboratoryRequestRepository
+    ) {
+        this.laboratoryRequestService = laboratoryRequestService;
         this.laboratoryRequestRepository = laboratoryRequestRepository;
     }
 
@@ -54,7 +65,7 @@ public class LaboratoryRequestResource {
         if (laboratoryRequest.getId() != null) {
             throw new BadRequestAlertException("A new laboratoryRequest cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        LaboratoryRequest result = laboratoryRequestRepository.save(laboratoryRequest);
+        LaboratoryRequest result = laboratoryRequestService.save(laboratoryRequest);
         return ResponseEntity
             .created(new URI("/api/laboratory-requests/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -88,7 +99,7 @@ public class LaboratoryRequestResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        LaboratoryRequest result = laboratoryRequestRepository.save(laboratoryRequest);
+        LaboratoryRequest result = laboratoryRequestService.update(laboratoryRequest);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, laboratoryRequest.getId().toString()))
@@ -123,52 +134,7 @@ public class LaboratoryRequestResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<LaboratoryRequest> result = laboratoryRequestRepository
-            .findById(laboratoryRequest.getId())
-            .map(existingLaboratoryRequest -> {
-                if (laboratoryRequest.getSampleId() != null) {
-                    existingLaboratoryRequest.setSampleId(laboratoryRequest.getSampleId());
-                }
-                if (laboratoryRequest.getSampleTypeId() != null) {
-                    existingLaboratoryRequest.setSampleTypeId(laboratoryRequest.getSampleTypeId());
-                }
-                if (laboratoryRequest.getDateCollected() != null) {
-                    existingLaboratoryRequest.setDateCollected(laboratoryRequest.getDateCollected());
-                }
-                if (laboratoryRequest.getDateReceived() != null) {
-                    existingLaboratoryRequest.setDateReceived(laboratoryRequest.getDateReceived());
-                }
-                if (laboratoryRequest.getSampleCondition() != null) {
-                    existingLaboratoryRequest.setSampleCondition(laboratoryRequest.getSampleCondition());
-                }
-                if (laboratoryRequest.getClientId() != null) {
-                    existingLaboratoryRequest.setClientId(laboratoryRequest.getClientId());
-                }
-                if (laboratoryRequest.getPriority() != null) {
-                    existingLaboratoryRequest.setPriority(laboratoryRequest.getPriority());
-                }
-                if (laboratoryRequest.getStatus() != null) {
-                    existingLaboratoryRequest.setStatus(laboratoryRequest.getStatus());
-                }
-                if (laboratoryRequest.getRemarks() != null) {
-                    existingLaboratoryRequest.setRemarks(laboratoryRequest.getRemarks());
-                }
-                if (laboratoryRequest.getLocationId() != null) {
-                    existingLaboratoryRequest.setLocationId(laboratoryRequest.getLocationId());
-                }
-                if (laboratoryRequest.getSectorId() != null) {
-                    existingLaboratoryRequest.setSectorId(laboratoryRequest.getSectorId());
-                }
-                if (laboratoryRequest.getDistrictId() != null) {
-                    existingLaboratoryRequest.setDistrictId(laboratoryRequest.getDistrictId());
-                }
-                if (laboratoryRequest.getProcinceId() != null) {
-                    existingLaboratoryRequest.setProcinceId(laboratoryRequest.getProcinceId());
-                }
-
-                return existingLaboratoryRequest;
-            })
-            .map(laboratoryRequestRepository::save);
+        Optional<LaboratoryRequest> result = laboratoryRequestService.partialUpdate(laboratoryRequest);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -179,12 +145,17 @@ public class LaboratoryRequestResource {
     /**
      * {@code GET  /laboratory-requests} : get all the laboratoryRequests.
      *
+     * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of laboratoryRequests in body.
      */
     @GetMapping("/laboratory-requests")
-    public List<LaboratoryRequest> getAllLaboratoryRequests() {
-        log.debug("REST request to get all LaboratoryRequests");
-        return laboratoryRequestRepository.findAll();
+    public ResponseEntity<List<LaboratoryRequest>> getAllLaboratoryRequests(
+        @org.springdoc.api.annotations.ParameterObject Pageable pageable
+    ) {
+        log.debug("REST request to get a page of LaboratoryRequests");
+        Page<LaboratoryRequest> page = laboratoryRequestService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -196,7 +167,7 @@ public class LaboratoryRequestResource {
     @GetMapping("/laboratory-requests/{id}")
     public ResponseEntity<LaboratoryRequest> getLaboratoryRequest(@PathVariable Long id) {
         log.debug("REST request to get LaboratoryRequest : {}", id);
-        Optional<LaboratoryRequest> laboratoryRequest = laboratoryRequestRepository.findById(id);
+        Optional<LaboratoryRequest> laboratoryRequest = laboratoryRequestService.findOne(id);
         return ResponseUtil.wrapOrNotFound(laboratoryRequest);
     }
 
@@ -209,7 +180,7 @@ public class LaboratoryRequestResource {
     @DeleteMapping("/laboratory-requests/{id}")
     public ResponseEntity<Void> deleteLaboratoryRequest(@PathVariable Long id) {
         log.debug("REST request to delete LaboratoryRequest : {}", id);
-        laboratoryRequestRepository.deleteById(id);
+        laboratoryRequestService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

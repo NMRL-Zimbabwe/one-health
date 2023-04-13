@@ -10,13 +10,19 @@ import javax.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
+import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
 import zw.nmrl.onehealth.domain.Sector;
 import zw.nmrl.onehealth.repository.SectorRepository;
+import zw.nmrl.onehealth.service.SectorService;
 import zw.nmrl.onehealth.web.rest.errors.BadRequestAlertException;
 
 /**
@@ -24,7 +30,6 @@ import zw.nmrl.onehealth.web.rest.errors.BadRequestAlertException;
  */
 @RestController
 @RequestMapping("/api")
-@Transactional
 public class SectorResource {
 
     private final Logger log = LoggerFactory.getLogger(SectorResource.class);
@@ -34,9 +39,12 @@ public class SectorResource {
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
+    private final SectorService sectorService;
+
     private final SectorRepository sectorRepository;
 
-    public SectorResource(SectorRepository sectorRepository) {
+    public SectorResource(SectorService sectorService, SectorRepository sectorRepository) {
+        this.sectorService = sectorService;
         this.sectorRepository = sectorRepository;
     }
 
@@ -53,7 +61,7 @@ public class SectorResource {
         if (sector.getId() != null) {
             throw new BadRequestAlertException("A new sector cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        Sector result = sectorRepository.save(sector);
+        Sector result = sectorService.save(sector);
         return ResponseEntity
             .created(new URI("/api/sectors/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
@@ -87,7 +95,7 @@ public class SectorResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Sector result = sectorRepository.save(sector);
+        Sector result = sectorService.update(sector);
         return ResponseEntity
             .ok()
             .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, sector.getId().toString()))
@@ -122,19 +130,7 @@ public class SectorResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Sector> result = sectorRepository
-            .findById(sector.getId())
-            .map(existingSector -> {
-                if (sector.getName() != null) {
-                    existingSector.setName(sector.getName());
-                }
-                if (sector.getCode() != null) {
-                    existingSector.setCode(sector.getCode());
-                }
-
-                return existingSector;
-            })
-            .map(sectorRepository::save);
+        Optional<Sector> result = sectorService.partialUpdate(sector);
 
         return ResponseUtil.wrapOrNotFound(
             result,
@@ -145,12 +141,15 @@ public class SectorResource {
     /**
      * {@code GET  /sectors} : get all the sectors.
      *
+     * @param pageable the pagination information.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of sectors in body.
      */
     @GetMapping("/sectors")
-    public List<Sector> getAllSectors() {
-        log.debug("REST request to get all Sectors");
-        return sectorRepository.findAll();
+    public ResponseEntity<List<Sector>> getAllSectors(@org.springdoc.api.annotations.ParameterObject Pageable pageable) {
+        log.debug("REST request to get a page of Sectors");
+        Page<Sector> page = sectorService.findAll(pageable);
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
+        return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
 
     /**
@@ -162,7 +161,7 @@ public class SectorResource {
     @GetMapping("/sectors/{id}")
     public ResponseEntity<Sector> getSector(@PathVariable Long id) {
         log.debug("REST request to get Sector : {}", id);
-        Optional<Sector> sector = sectorRepository.findById(id);
+        Optional<Sector> sector = sectorService.findOne(id);
         return ResponseUtil.wrapOrNotFound(sector);
     }
 
@@ -175,7 +174,7 @@ public class SectorResource {
     @DeleteMapping("/sectors/{id}")
     public ResponseEntity<Void> deleteSector(@PathVariable Long id) {
         log.debug("REST request to delete Sector : {}", id);
-        sectorRepository.deleteById(id);
+        sectorService.delete(id);
         return ResponseEntity
             .noContent()
             .headers(HeaderUtil.createEntityDeletionAlert(applicationName, true, ENTITY_NAME, id.toString()))

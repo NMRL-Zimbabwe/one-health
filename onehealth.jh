@@ -118,3 +118,6 @@ entity Country {
 	longitude String,
     latitude String,
 }
+
+paginate * with pagination
+service all with serviceImpl
