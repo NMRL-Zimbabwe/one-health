@@ -1,21 +1,21 @@
 <div>
-  <h2 id="page-heading" data-cy="AntibioticHeading">
-    <span jhiTranslate="oneHealthApp.antibiotic.home.title">Antibiotics</span>
+  <h2 id="page-heading" data-cy="AntibioticClassHeading">
+    <span jhiTranslate="oneHealthApp.antibioticClass.home.title">Antibiotic Classes</span>
 
     <div class="d-flex justify-content-end">
       <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
         <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
-        <span jhiTranslate="oneHealthApp.antibiotic.home.refreshListLabel">Refresh list</span>
+        <span jhiTranslate="oneHealthApp.antibioticClass.home.refreshListLabel">Refresh list</span>
       </button>
 
       <button
         id="jh-create-entity"
         data-cy="entityCreateButton"
-        class="btn btn-primary jh-create-entity create-antibiotic"
-        [routerLink]="['/antibiotic/new']"
+        class="btn btn-primary jh-create-entity create-antibiotic-class"
+        [routerLink]="['/antibiotic-class/new']"
       >
         <fa-icon icon="plus"></fa-icon>
-        <span jhiTranslate="oneHealthApp.antibiotic.home.createLabel"> Create a new Antibiotic </span>
+        <span jhiTranslate="oneHealthApp.antibioticClass.home.createLabel"> Create a new Antibiotic Class </span>
       </button>
     </div>
   </h2>
@@ -24,11 +24,11 @@
 
   <jhi-alert></jhi-alert>
 
-  <div class="alert alert-warning" id="no-result" *ngIf="antibiotics?.length === 0">
-    <span jhiTranslate="oneHealthApp.antibiotic.home.notFound">No Antibiotics found</span>
+  <div class="alert alert-warning" id="no-result" *ngIf="antibioticClasses?.length === 0">
+    <span jhiTranslate="oneHealthApp.antibioticClass.home.notFound">No Antibiotic Classes found</span>
   </div>
 
-  <div class="table-responsive table-entities" id="entities" *ngIf="antibiotics && antibiotics.length > 0">
+  <div class="table-responsive table-entities" id="entities" *ngIf="antibioticClasses && antibioticClasses.length > 0">
     <table class="table table-striped" aria-describedby="page-heading">
       <thead>
         <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
@@ -40,31 +40,13 @@
           </th>
           <th scope="col" jhiSortBy="name">
             <div class="d-flex">
-              <span jhiTranslate="oneHealthApp.antibiotic.name">Name</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="code">
-            <div class="d-flex">
-              <span jhiTranslate="oneHealthApp.antibiotic.code">Code</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="status">
-            <div class="d-flex">
-              <span jhiTranslate="oneHealthApp.antibiotic.status">Status</span>
+              <span jhiTranslate="oneHealthApp.antibioticClass.name">Name</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
           <th scope="col" jhiSortBy="description">
             <div class="d-flex">
-              <span jhiTranslate="oneHealthApp.antibiotic.description">Description</span>
-              <fa-icon class="p-1" icon="sort"></fa-icon>
-            </div>
-          </th>
-          <th scope="col" jhiSortBy="classId">
-            <div class="d-flex">
-              <span jhiTranslate="oneHealthApp.antibiotic.classId">Class Id</span>
+              <span jhiTranslate="oneHealthApp.antibioticClass.description">Description</span>
               <fa-icon class="p-1" icon="sort"></fa-icon>
             </div>
           </th>
@@ -72,20 +54,17 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let antibiotic of antibiotics; trackBy: trackId" data-cy="entityTable">
+        <tr *ngFor="let antibioticClass of antibioticClasses; trackBy: trackId" data-cy="entityTable">
           <td>
-            <a [routerLink]="['/antibiotic', antibiotic.id, 'view']">{{ antibiotic.id }}</a>
+            <a [routerLink]="['/antibiotic-class', antibioticClass.id, 'view']">{{ antibioticClass.id }}</a>
           </td>
-          <td>{{ antibiotic.name }}</td>
-          <td>{{ antibiotic.code }}</td>
-          <td>{{ antibiotic.status }}</td>
-          <td>{{ antibiotic.description }}</td>
-          <td>{{ antibiotic.classId }}</td>
+          <td>{{ antibioticClass.name }}</td>
+          <td>{{ antibioticClass.description }}</td>
           <td class="text-end">
             <div class="btn-group">
               <button
                 type="submit"
-                [routerLink]="['/antibiotic', antibiotic.id, 'view']"
+                [routerLink]="['/antibiotic-class', antibioticClass.id, 'view']"
                 class="btn btn-info btn-sm"
                 data-cy="entityDetailsButton"
               >
@@ -95,7 +74,7 @@
 
               <button
                 type="submit"
-                [routerLink]="['/antibiotic', antibiotic.id, 'edit']"
+                [routerLink]="['/antibiotic-class', antibioticClass.id, 'edit']"
                 class="btn btn-primary btn-sm"
                 data-cy="entityEditButton"
               >
@@ -103,7 +82,7 @@
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
               </button>
 
-              <button type="submit" (click)="delete(antibiotic)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+              <button type="submit" (click)="delete(antibioticClass)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
                 <fa-icon icon="times"></fa-icon>
                 <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
               </button>
@@ -114,7 +93,7 @@
     </table>
   </div>
 
-  <div *ngIf="antibiotics && antibiotics.length > 0">
+  <div *ngIf="antibioticClasses && antibioticClasses.length > 0">
     <div class="d-flex justify-content-center">
       <jhi-item-count [params]="{ page: page, totalItems: totalItems, itemsPerPage: itemsPerPage }"></jhi-item-count>
     </div>

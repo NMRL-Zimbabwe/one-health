@@ -37,7 +37,8 @@
       "LaboratoryRequest",
       "Organism",
       "ClientAddress",
-      "ClientPhone"
+      "ClientPhone",
+      "AntibioticClass"
     ],
     "entitySuffix": "",
     "gitCompany": "",
@@ -45,7 +46,7 @@
     "jhipsterVersion": "7.9.3",
     "jwtSecretKey": "ZGQ2ZTZiZmUyNDhhNDdiYWE1YjIwOWEwMDQxNjMyYmZjZGM1MmRkOWRkNzZhNzUyZGZmZDdkNGM5YmY5Yzg3NGY5YmRjZWQ0MWJjYzg2NTgxOTQ4NTc4M2VlYzZkY2Q1ODc5NWI2N2I5ZmE2YWJjNjRkZTY4MGYzY2JhMTlmNzI=",
     "languages": ["en"],
-    "lastLiquibaseTimestamp": 1681380368000,
+    "lastLiquibaseTimestamp": 1681458393000,
     "messageBroker": false,
     "nativeLanguage": "en",
     "otherModules": [],

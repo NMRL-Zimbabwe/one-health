@@ -41,6 +41,9 @@ class AntibioticResourceIT {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
+    private static final String DEFAULT_CLASS_ID = "AAAAAAAAAA";
+    private static final String UPDATED_CLASS_ID = "BBBBBBBBBB";
+
     private static final String ENTITY_API_URL = "/api/antibiotics";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
@@ -69,7 +72,8 @@ class AntibioticResourceIT {
             .name(DEFAULT_NAME)
             .code(DEFAULT_CODE)
             .status(DEFAULT_STATUS)
-            .description(DEFAULT_DESCRIPTION);
+            .description(DEFAULT_DESCRIPTION)
+            .classId(DEFAULT_CLASS_ID);
         return antibiotic;
     }
 
@@ -84,7 +88,8 @@ class AntibioticResourceIT {
             .name(UPDATED_NAME)
             .code(UPDATED_CODE)
             .status(UPDATED_STATUS)
-            .description(UPDATED_DESCRIPTION);
+            .description(UPDATED_DESCRIPTION)
+            .classId(UPDATED_CLASS_ID);
         return antibiotic;
     }
 
@@ -110,6 +115,7 @@ class AntibioticResourceIT {
         assertThat(testAntibiotic.getCode()).isEqualTo(DEFAULT_CODE);
         assertThat(testAntibiotic.getStatus()).isEqualTo(DEFAULT_STATUS);
         assertThat(testAntibiotic.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testAntibiotic.getClassId()).isEqualTo(DEFAULT_CLASS_ID);
     }
 
     @Test
@@ -149,6 +155,23 @@ class AntibioticResourceIT {
 
     @Test
     @Transactional
+    void checkClassIdIsRequired() throws Exception {
+        int databaseSizeBeforeTest = antibioticRepository.findAll().size();
+        // set the field null
+        antibiotic.setClassId(null);
+
+        // Create the Antibiotic, which fails.
+
+        restAntibioticMockMvc
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(TestUtil.convertObjectToJsonBytes(antibiotic)))
+            .andExpect(status().isBadRequest());
+
+        List<Antibiotic> antibioticList = antibioticRepository.findAll();
+        assertThat(antibioticList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     void getAllAntibiotics() throws Exception {
         // Initialize the database
         antibioticRepository.saveAndFlush(antibiotic);
@@ -162,7 +185,8 @@ class AntibioticResourceIT {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME)))
             .andExpect(jsonPath("$.[*].code").value(hasItem(DEFAULT_CODE)))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)));
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION)))
+            .andExpect(jsonPath("$.[*].classId").value(hasItem(DEFAULT_CLASS_ID)));
     }
 
     @Test
@@ -180,7 +204,8 @@ class AntibioticResourceIT {
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME))
             .andExpect(jsonPath("$.code").value(DEFAULT_CODE))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
-            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION));
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION))
+            .andExpect(jsonPath("$.classId").value(DEFAULT_CLASS_ID));
     }
 
     @Test
@@ -202,7 +227,12 @@ class AntibioticResourceIT {
         Antibiotic updatedAntibiotic = antibioticRepository.findById(antibiotic.getId()).get();
         // Disconnect from session so that the updates on updatedAntibiotic are not directly saved in db
         em.detach(updatedAntibiotic);
-        updatedAntibiotic.name(UPDATED_NAME).code(UPDATED_CODE).status(UPDATED_STATUS).description(UPDATED_DESCRIPTION);
+        updatedAntibiotic
+            .name(UPDATED_NAME)
+            .code(UPDATED_CODE)
+            .status(UPDATED_STATUS)
+            .description(UPDATED_DESCRIPTION)
+            .classId(UPDATED_CLASS_ID);
 
         restAntibioticMockMvc
             .perform(
@@ -220,6 +250,7 @@ class AntibioticResourceIT {
         assertThat(testAntibiotic.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testAntibiotic.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testAntibiotic.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testAntibiotic.getClassId()).isEqualTo(UPDATED_CLASS_ID);
     }
 
     @Test
@@ -308,6 +339,7 @@ class AntibioticResourceIT {
         assertThat(testAntibiotic.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testAntibiotic.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testAntibiotic.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testAntibiotic.getClassId()).isEqualTo(DEFAULT_CLASS_ID);
     }
 
     @Test
@@ -322,7 +354,12 @@ class AntibioticResourceIT {
         Antibiotic partialUpdatedAntibiotic = new Antibiotic();
         partialUpdatedAntibiotic.setId(antibiotic.getId());
 
-        partialUpdatedAntibiotic.name(UPDATED_NAME).code(UPDATED_CODE).status(UPDATED_STATUS).description(UPDATED_DESCRIPTION);
+        partialUpdatedAntibiotic
+            .name(UPDATED_NAME)
+            .code(UPDATED_CODE)
+            .status(UPDATED_STATUS)
+            .description(UPDATED_DESCRIPTION)
+            .classId(UPDATED_CLASS_ID);
 
         restAntibioticMockMvc
             .perform(
@@ -340,6 +377,7 @@ class AntibioticResourceIT {
         assertThat(testAntibiotic.getCode()).isEqualTo(UPDATED_CODE);
         assertThat(testAntibiotic.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testAntibiotic.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testAntibiotic.getClassId()).isEqualTo(UPDATED_CLASS_ID);
     }
 
     @Test

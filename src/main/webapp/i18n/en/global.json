@@ -25,6 +25,7 @@
         "organism": "Organism",
         "clientAddress": "Client Address",
         "clientPhone": "Client Phone",
+        "antibioticClass": "Antibiotic Class",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

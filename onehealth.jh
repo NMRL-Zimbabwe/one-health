@@ -56,6 +56,12 @@ entity Antibiotic {
     code String,
     status String,
     description String,
+	classId String required,
+}
+
+entity AntibioticClass {
+	name String,
+    description String,
 }
 
 entity Organism {

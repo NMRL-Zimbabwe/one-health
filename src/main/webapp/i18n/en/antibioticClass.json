@@ -1,0 +1,25 @@
+{
+  "oneHealthApp": {
+    "antibioticClass": {
+      "home": {
+        "title": "Antibiotic Classes",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Antibiotic Class",
+        "createOrEditLabel": "Create or edit a Antibiotic Class",
+        "notFound": "No Antibiotic Classes found"
+      },
+      "created": "A new Antibiotic Class is created with identifier {{ param }}",
+      "updated": "A Antibiotic Class is updated with identifier {{ param }}",
+      "deleted": "A Antibiotic Class is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Antibiotic Class {{ id }}?"
+      },
+      "detail": {
+        "title": "Antibiotic Class"
+      },
+      "id": "ID",
+      "name": "Name",
+      "description": "Description"
+    }
+  }
+}

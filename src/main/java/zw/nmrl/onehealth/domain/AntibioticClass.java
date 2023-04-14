@@ -2,15 +2,14 @@ package zw.nmrl.onehealth.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import javax.validation.constraints.*;
 
 /**
- * A Antibiotic.
+ * A AntibioticClass.
  */
 @Entity
-@Table(name = "antibiotic")
+@Table(name = "antibiotic_class")
 @SuppressWarnings("common-java:DuplicatedBlocks")
-public class Antibiotic implements Serializable {
+public class AntibioticClass implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -20,22 +19,11 @@ public class Antibiotic implements Serializable {
     @Column(name = "id")
     private Long id;
 
-    @NotNull
-    @Column(name = "name", nullable = false)
+    @Column(name = "name")
     private String name;
-
-    @Column(name = "code")
-    private String code;
-
-    @Column(name = "status")
-    private String status;
 
     @Column(name = "description")
     private String description;
-
-    @NotNull
-    @Column(name = "class_id", nullable = false)
-    private String classId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -43,7 +31,7 @@ public class Antibiotic implements Serializable {
         return this.id;
     }
 
-    public Antibiotic id(Long id) {
+    public AntibioticClass id(Long id) {
         this.setId(id);
         return this;
     }
@@ -56,7 +44,7 @@ public class Antibiotic implements Serializable {
         return this.name;
     }
 
-    public Antibiotic name(String name) {
+    public AntibioticClass name(String name) {
         this.setName(name);
         return this;
     }
@@ -65,56 +53,17 @@ public class Antibiotic implements Serializable {
         this.name = name;
     }
 
-    public String getCode() {
-        return this.code;
-    }
-
-    public Antibiotic code(String code) {
-        this.setCode(code);
-        return this;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public String getStatus() {
-        return this.status;
-    }
-
-    public Antibiotic status(String status) {
-        this.setStatus(status);
-        return this;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public String getDescription() {
         return this.description;
     }
 
-    public Antibiotic description(String description) {
+    public AntibioticClass description(String description) {
         this.setDescription(description);
         return this;
     }
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getClassId() {
-        return this.classId;
-    }
-
-    public Antibiotic classId(String classId) {
-        this.setClassId(classId);
-        return this;
-    }
-
-    public void setClassId(String classId) {
-        this.classId = classId;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -124,10 +73,10 @@ public class Antibiotic implements Serializable {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Antibiotic)) {
+        if (!(o instanceof AntibioticClass)) {
             return false;
         }
-        return id != null && id.equals(((Antibiotic) o).id);
+        return id != null && id.equals(((AntibioticClass) o).id);
     }
 
     @Override
@@ -139,13 +88,10 @@ public class Antibiotic implements Serializable {
     // prettier-ignore
     @Override
     public String toString() {
-        return "Antibiotic{" +
+        return "AntibioticClass{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", code='" + getCode() + "'" +
-            ", status='" + getStatus() + "'" +
             ", description='" + getDescription() + "'" +
-            ", classId='" + getClassId() + "'" +
             "}";
     }
 }
