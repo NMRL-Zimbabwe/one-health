@@ -22,6 +22,7 @@ type AntibioticFormGroupContent = {
   code: FormControl<IAntibiotic['code']>;
   status: FormControl<IAntibiotic['status']>;
   description: FormControl<IAntibiotic['description']>;
+  classId: FormControl<IAntibiotic['classId']>;
 };
 
 export type AntibioticFormGroup = FormGroup<AntibioticFormGroupContent>;
@@ -47,6 +48,9 @@ export class AntibioticFormService {
       code: new FormControl(antibioticRawValue.code),
       status: new FormControl(antibioticRawValue.status),
       description: new FormControl(antibioticRawValue.description),
+      classId: new FormControl(antibioticRawValue.classId, {
+        validators: [Validators.required],
+      }),
     });
   }
 

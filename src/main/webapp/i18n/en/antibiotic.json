@@ -21,7 +21,8 @@
       "name": "Name",
       "code": "Code",
       "status": "Status",
-      "description": "Description"
+      "description": "Description",
+      "classId": "Class Id"
     }
   }
 }
