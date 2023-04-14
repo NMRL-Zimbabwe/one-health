@@ -1,0 +1,24 @@
+{
+  "applications": "*",
+  "changelogDate": "20230414074633",
+  "dto": "no",
+  "embedded": false,
+  "entityTableName": "antibiotic_class",
+  "fields": [
+    {
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "description",
+      "fieldType": "String"
+    }
+  ],
+  "fluentMethods": true,
+  "jpaMetamodelFiltering": false,
+  "name": "AntibioticClass",
+  "pagination": "pagination",
+  "readOnly": false,
+  "relationships": [],
+  "service": "serviceImpl"
+}

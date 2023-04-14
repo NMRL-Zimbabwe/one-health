@@ -4,6 +4,7 @@ export interface IAntibiotic {
   code?: string | null;
   status?: string | null;
   description?: string | null;
+  classId?: string | null;
 }
 
 export type NewAntibiotic = Omit<IAntibiotic, 'id'> & { id: null };
