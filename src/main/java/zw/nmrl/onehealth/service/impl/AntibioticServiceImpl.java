@@ -57,6 +57,9 @@ public class AntibioticServiceImpl implements AntibioticService {
                 if (antibiotic.getDescription() != null) {
                     existingAntibiotic.setDescription(antibiotic.getDescription());
                 }
+                if (antibiotic.getClassId() != null) {
+                    existingAntibiotic.setClassId(antibiotic.getClassId());
+                }
 
                 return existingAntibiotic;
             })

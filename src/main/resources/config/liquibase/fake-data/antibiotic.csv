@@ -1,11 +1,11 @@
-id;name;code;status;description
-1;Streamlined Netherlands;hack Club;definition;definition parse
-2;invoice virtual;European;Home Frozen;help-desk
-3;e-business New;South Thailand;Agent;Guinea-Bissau Fish
-4;frame;Azerbaijan lavender;Card United e-commerce;New
-5;Borders;synthesize;Liberian;Awesome North Decentralized
-6;Investor;Representative Intelligent 24/365;Uzbekistan FTP;magenta
-7;Developer;York;Ball Loan Fresh;Trinidad Auto Organic
-8;teal Configuration Bedfordshire;dynamic;Kuwaiti Towels Tennessee;Metal Rustic
-9;24/7 Personal;sensor;Malaysia;East Connecticut Nebraska
-10;AI Island Buckinghamshire;Market SDD;Fantastic upward-trending;generate Developer Rustic
+id;name;code;status;description;class_id
+1;Streamlined Netherlands;hack Club;definition;definition parse;invoice virtual
+2;European;Home Frozen;help-desk;e-business New;South Thailand
+3;Agent;Guinea-Bissau Fish;frame;Azerbaijan lavender;Card United e-commerce
+4;New;Borders;synthesize;Liberian;Awesome North Decentralized
+5;Investor;Representative Intelligent 24/365;Uzbekistan FTP;magenta;Developer
+6;York;Ball Loan Fresh;Trinidad Auto Organic;teal Configuration Bedfordshire;dynamic
+7;Kuwaiti Towels Tennessee;Metal Rustic;24/7 Personal;sensor;Malaysia
+8;East Connecticut Nebraska;AI Island Buckinghamshire;Market SDD;Fantastic upward-trending;generate Developer Rustic
+9;Applications THX Handmade;sensor Account Tools;ivory Money;Trail open-source Strategist;Account Ball
+10;Officer initiatives;withdrawal;Republic;PCI;Officer Designer compress

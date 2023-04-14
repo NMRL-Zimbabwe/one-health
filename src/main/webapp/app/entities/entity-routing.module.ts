@@ -94,6 +94,11 @@ import { RouterModule } from '@angular/router';
         data: { pageTitle: 'oneHealthApp.clientPhone.home.title' },
         loadChildren: () => import('./client-phone/client-phone.module').then(m => m.ClientPhoneModule),
       },
+      {
+        path: 'antibiotic-class',
+        data: { pageTitle: 'oneHealthApp.antibioticClass.home.title' },
+        loadChildren: () => import('./antibiotic-class/antibiotic-class.module').then(m => m.AntibioticClassModule),
+      },
       /* jhipster-needle-add-entity-route - JHipster will add entity modules routes here */
     ]),
   ],
