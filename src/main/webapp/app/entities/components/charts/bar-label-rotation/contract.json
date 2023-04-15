@@ -1,0 +1,25 @@
+{
+  "title": "Referer of a Website",
+  "subTitle": "Fake Data",
+  "data": {
+    "xValues": ["Escherichia-Coli", "Samlmonella", "Campylobacter", "Klebsiella", "HelicoBacter"],
+    "yValues": [
+      {
+        "group": "Human",
+        "values": [100, 332, 301, 334, 390]
+      },
+      {
+        "group": "Animal",
+        "values": [220, 182, 191, 234, 290]
+      },
+      {
+        "group": "EMA",
+        "values": [150, 232, 201, 154, 190]
+      },
+      {
+        "group": "Food",
+        "values": [98, 77, 101, 99, 40]
+      }
+    ]
+  }
+}
