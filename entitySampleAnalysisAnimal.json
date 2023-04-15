@@ -1,0 +1,67 @@
+{
+  "demographic": {
+    "sender": "lawrence chirowodza",
+    "senderAddress": "address",
+    "farmName": "Dziva",
+    "farmAddress": "address",
+    "senderPhone": ["077778888", "077778888"],
+    "farmerPhone": ["078885555"],
+    "senderEmail": "dziva@gmail.com",
+    "labNumber": "BN23200000",
+    "sector": "urban",
+    "species": "dog",
+    "breed": "sussex",
+    "sex": "male",
+    "age": "2"
+  },
+  "laboratoryRequest": {
+    "farmingSystem": "intensive",
+    "dipTank": { "longitude": 36567.8, "latitude": 8689.6 },
+    "isFollowUpSubmission": "true",
+    "firstSubmissionDate": "2023-03-12",
+    "numberOfSpecimen": "120",
+    "specimenDescription": "sealed",
+    "testRequired": "test name, test code",
+    "purposeOfTest": "outbreak",
+    "clinicalHistory": "BP",
+    "clinicalSigns": "fever",
+    "postMortemFindings": "poisoned",
+    "tentativeDiagnosis": "foot and mouth",
+    "totalNumberOfAnimals": "23",
+    "numberOfRiskAnimals": "12",
+    "numberOfDeadAnimals": "24",
+    "numberOfSickAnimals": "10",
+    "examinationRequired": "toxicology",
+    "submissionDate": "2023-04-12",
+    "receivedBy": "Allan Chadamoyo",
+    "receiverTitle": "Dr",
+    "specimenBoxNumber": "4",
+    "deathDate": "2023-04-14",
+    "deathTime": "12:00",
+    "vaccinationDate": "2023-02-01",
+    "vaccinationAge": "2",
+    "vaccinationContacts": "vet",
+    "mannerOfDeath": "killed",
+    "whoDestroyed": "Arthur Musendame"
+  },
+
+  "analysis": [
+    {
+      "referrenceNumber": "A5667U",
+      "testReportNumber": "B2334",
+      "testPerformed": "urinalysis",
+      "testMethod": "dna pcr",
+      "testProcedure": "SOP12",
+      "reportVersionNumber": "v11",
+      "laboratory": "cvl",
+      "accreditationStatus": "accreditated",
+      "dateSampled": "2023-02-28",
+      "dateReceived": "2023-03-02",
+      "result": "positive",
+      "comments": "good",
+      "dateReportProduced": "2023-04-11",
+      "qmsReportNumber": "098",
+      "disclaimer": "disclaimer"
+    }
+  ]
+}

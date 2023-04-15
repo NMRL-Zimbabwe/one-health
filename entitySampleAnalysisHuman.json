@@ -1,0 +1,15 @@
+{
+  "demographic": {
+    "firstName": "lawrence",
+    "lastName": "chirowodza",
+    "gender": "MALE",
+    "dob": "2020-09-03",
+    "phone": ["077778888", "077778888"],
+    "address": ["home address"],
+    "demographicId": "WE5376788909",
+    "clientName": "",
+    "clientId": "ZW0002"
+  },
+  "laboratoryRequest": {},
+  "analysis": [{}]
+}

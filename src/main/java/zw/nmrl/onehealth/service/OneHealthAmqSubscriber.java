@@ -11,6 +11,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import zw.nmrl.onehealth.service.dto.AnimalHealthDTO;
 
 @Service
 //@Transactional
@@ -23,9 +24,8 @@ public class OneHealthAmqSubscriber {
      * @writer Lawrence
      */
 
-    /*
-     * @Value("${myConfig.myRabbitLocalGateway}") private String gateway;
-     */
+    @Autowired
+    private ObjectMapper mapper;
 
     @RabbitListener(bindings = @QueueBinding(exchange = @Exchange("amq.direct"), key = "health", value = @Queue("oneHealth")))
     public void reciveRequestFromLIMS(Message msg) throws IOException, TimeoutException {
@@ -33,8 +33,10 @@ public class OneHealthAmqSubscriber {
         msg.getMessageProperties().getHeader("request");
 
         System.out.println("Received Message: " + msg.getBody());
-        //   RegistrationFromLims obj = mapper.readValue(string, RegistrationFromLims.class);
+        // RegistrationFromLims obj = mapper.readValue(string,
+        // RegistrationFromLims.class);
 
+        AnimalHealthDTO ahDTO = mapper.readValue(string, AnimalHealthDTO.class);
         // laboratoryRequestService.updateLaoratoryRequest(obj);
     }
 }
