@@ -15,6 +15,7 @@
     "age": "2"
   },
   "laboratoryRequest": {
+    "sampleId": "BP23-1456",
     "farmingSystem": "intensive",
     "dipTank": { "longitude": 36567.8, "latitude": 8689.6 },
     "isFollowUpSubmission": "true",

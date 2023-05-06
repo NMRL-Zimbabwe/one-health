@@ -1,12 +1,7 @@
 package zw.nmrl.onehealth.service.dto;
 
-import java.time.LocalDate;
+public class HumanHealthAnalysisDTO {
 
-public class AnimalHealthLaboratoryRequestDTO {
-
-    private String sampleId;
-    private LocalDate dateCollected;
-    private LocalDate dateReceived;
     private String farmingSystem;
     private DipTank dipTank;
     private String isFollowUpSubmission;
@@ -35,30 +30,6 @@ public class AnimalHealthLaboratoryRequestDTO {
     private String vaccinationContacts;
     private String mannerOfDeath;
     private String whoDestroyed;
-
-    public String getSampleId() {
-        return sampleId;
-    }
-
-    public void setSampleId(String sampleId) {
-        this.sampleId = sampleId;
-    }
-
-    public LocalDate getDateCollected() {
-        return dateCollected;
-    }
-
-    public void setDateCollected(LocalDate DateCollected, LocalDate dateCollected) {
-        LocalDate string = this.dateCollected = dateCollected;
-    }
-
-    public LocalDate getDateReceived() {
-        return dateCollected;
-    }
-
-    public LocalDate setDateReceived(LocalDate DateReceived, LocalDate dateReceived) {
-        return dateReceived;
-    }
 
     public String getFarmingSystem() {
         return farmingSystem;

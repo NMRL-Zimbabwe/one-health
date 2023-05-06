@@ -1,6 +1,7 @@
 package zw.nmrl.onehealth.service.impl;
 
 import java.util.Optional;
+import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import zw.nmrl.onehealth.domain.Demography;
 import zw.nmrl.onehealth.repository.DemographyRepository;
 import zw.nmrl.onehealth.service.DemographyService;
+import zw.nmrl.onehealth.service.dto.AnimalHealthDTO;
 
 /**
  * Service Implementation for managing {@link Demography}.
@@ -36,6 +38,20 @@ public class DemographyServiceImpl implements DemographyService {
     public Demography update(Demography demography) {
         log.debug("Request to update Demography : {}", demography);
         return demographyRepository.save(demography);
+    }
+
+    private AnimalHealthDTO saveDemography(AnimalHealthDTO dto) {
+        log.debug("Request to update Demography : {}", dto);
+
+        String uuid = UUID.randomUUID().toString();
+        Demography demo = new Demography();
+        demo.setRecordId(uuid);
+        demo.setValue(dto.getDemographic().getFarmName());
+        demo.setDemographicCodingId(uuid);
+
+        demo.setDemographicCodingId(uuid);
+
+        return null; //demographyRepository.save(demography);
     }
 
     @Override

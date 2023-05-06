@@ -26,7 +26,7 @@ public class LaboratoryRequest implements Serializable {
     private String sampleId;
 
     @NotNull
-    @Column(name = "sample_type_id", nullable = false)
+    @Column(name = "sample_type_id")
     private String sampleTypeId;
 
     @Column(name = "date_collected")

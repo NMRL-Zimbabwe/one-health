@@ -2,7 +2,7 @@ package zw.nmrl.onehealth.service.dto;
 
 import java.time.LocalDate;
 
-public class AnimalHealthLaboratoryRequestDTO {
+public class HumanHealthLaboratoryRequestDTO {
 
     private String sampleId;
     private LocalDate dateCollected;
